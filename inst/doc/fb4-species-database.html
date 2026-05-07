@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Hans Ttito" />
+
+<meta name="date" content="2026-05-04" />
+
+<title>Exploring the Species Parameter Database</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Exploring the Species Parameter
+Database</h1>
+<h4 class="author">Hans Ttito</h4>
+<h4 class="date">2026-05-04</h4>
+
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p><code>fb4package</code> ships with <code>fish4_parameters</code>, a
+curated database of bioenergetics parameter sets for more than 70 fish
+species compiled from the primary literature and from Fish Bioenergetics
+4.0 (Deslauriers et al. 2017). This vignette shows how to:</p>
+<ol style="list-style-type: decimal">
+<li>Inspect the database structure</li>
+<li>Search for species by name or family</li>
+<li>Understand the parameter organisation (equations and life
+stages)</li>
+<li>Compare key parameters across species</li>
+<li>Use database parameters in a simulation</li>
+</ol>
+<hr />
+</div>
+<div id="loading-and-inspecting-the-database" class="section level2">
+<h2>1. Loading and inspecting the database</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">data</span>(fish4_parameters)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>n_entries <span class="ot">&lt;-</span> <span class="fu">length</span>(fish4_parameters)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Total entries in database :&quot;</span>, n_entries, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; Total entries in database : 73</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;First 12 entries:</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt; First 12 entries:</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(<span class="fu">names</span>(fish4_parameters), <span class="dv">12</span>))</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;Alosa pseudoharengus&quot;           &quot;Gadus morhua&quot;                  </span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">#&gt;  [3] &quot;Brevoortia tyrannus&quot;            &quot;Thymallus arcticus baicalensis&quot;</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co">#&gt;  [5] &quot;Clupea harengus&quot;                &quot;Anchoa mitchilli&quot;              </span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co">#&gt;  [7] &quot;Hypophthalmichthys nobilis&quot;     &quot;Coregonus hoyi&quot;                </span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co">#&gt;  [9] &quot;Pomatomus saltatrix&quot;            &quot;Lepomis macrochirus&quot;           </span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co">#&gt; [11] &quot;Salvelinus fontinalis&quot;          &quot;Ameiurus nebulosus&quot;</span></span></code></pre></div>
+<p>Each entry is a named list keyed by the species’ scientific name.</p>
+<hr />
+</div>
+<div id="database-structure" class="section level2">
+<h2>2. Database structure</h2>
+<p>Every entry follows the same hierarchical structure:</p>
+<pre><code>fish4_parameters[[&quot;Species name&quot;]]
+├── species_info        # taxonomic information
+├── life_stages         # named list of life-stage parameter sets
+│   ├── juvenile        # (or adult, larval, etc.)
+│   │   ├── consumption
+│   │   ├── respiration
+│   │   ├── activity
+│   │   ├── sda
+│   │   ├── egestion
+│   │   ├── excretion
+│   │   └── predator    # energy density equation
+│   └── adult           # (if present)
+└── sources             # literature references</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Inspect a single entry</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>chinook <span class="ot">&lt;-</span> fish4_parameters[[<span class="st">&quot;Oncorhynchus tshawytscha&quot;</span>]]</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;=== Species info ===</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; === Species info ===</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">print</span>(chinook<span class="sc">$</span>species_info)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; $scientific_name</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Oncorhynchus tshawytscha&quot;</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; $common_name</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Chinook salmon (adult)&quot;</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; $family</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Salmonidae&quot;</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; $order</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Salmoniformes&quot;</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">=== Life stages available ===</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; === Life stages available ===</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">names</span>(chinook<span class="sc">$</span>life_stages))</span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt; [1] &quot;adult&quot;</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">=== Sources ===</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt; === Sources ===</span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="fu">print</span>(chinook<span class="sc">$</span>sources)</span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Stewart &amp; Ibarra 1991; Plumb &amp; Moffit 2015&quot;</span></span></code></pre></div>
+<hr />
+</div>
+<div id="searching-the-database" class="section level2">
+<h2>3. Searching the database</h2>
+<div id="by-scientific-name-partial-match" class="section level3">
+<h3>By scientific name (partial match)</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Find all Oncorhynchus species</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>onco_keys <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">&quot;Oncorhynchus&quot;</span>, <span class="fu">names</span>(fish4_parameters),</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>                  <span class="at">value =</span> <span class="cn">TRUE</span>, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Oncorhynchus species in database:</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; Oncorhynchus species in database:</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="fu">print</span>(onco_keys)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Oncorhynchus tshawytscha&quot; &quot;Oncorhynchus kisutch&quot;    </span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; [3] &quot;Oncorhynchus clarki&quot;      &quot;Oncorhynchus gorbuscha&quot;  </span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; [5] &quot;Oncorhynchus mykiss&quot;      &quot;Oncorhynchus nerka&quot;</span></span></code></pre></div>
+</div>
+<div id="by-common-name" class="section level3">
+<h3>By common name</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Extract all common names and search</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>common_names <span class="ot">&lt;-</span> <span class="fu">sapply</span>(fish4_parameters, <span class="cf">function</span>(x) {</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  x<span class="sc">$</span>species_info<span class="sc">$</span>common_name <span class="sc">%||%</span> <span class="cn">NA_character_</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>})</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>trout_idx <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">&quot;trout|salmon|char&quot;</span>, common_names,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>                  <span class="at">value =</span> <span class="cn">FALSE</span>, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Salmonid entries (trout / salmon / char):</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; Salmonid entries (trout / salmon / char):</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="fu">print</span>(common_names[trout_idx])</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt;            Salvelinus fontinalis                     Salmo trutta </span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; &quot;Brook Trout (juvenile &amp; adult)&quot;                    &quot;Brown Trout&quot; </span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt;           Salvelinus confluentus         Oncorhynchus tshawytscha </span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt;             &quot;Bull trout (adult)&quot;         &quot;Chinook salmon (adult)&quot; </span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt;             Oncorhynchus kisutch              Oncorhynchus clarki </span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt;            &quot;Coho salmon (adult)&quot;                &quot;Cutthroat trout&quot; </span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt;             Salvelinus namaycush           Oncorhynchus gorbuscha </span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt;             &quot;Lake trout (adult)&quot;            &quot;Pink salmon (adult)&quot; </span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt;              Oncorhynchus mykiss               Oncorhynchus nerka </span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt;       &quot;Rainbow Trout (juvenile)&quot;         &quot;Sockeye salmon (adult)&quot;</span></span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="listing-available-life-stages" class="section level2">
+<h2>4. Listing available life stages</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Summary of life stages per species</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>stage_summary <span class="ot">&lt;-</span> <span class="fu">sapply</span>(fish4_parameters, <span class="cf">function</span>(x) {</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="fu">names</span>(x<span class="sc">$</span>life_stages), <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>})</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co"># Show species that have more than one life stage</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>multi_stage <span class="ot">&lt;-</span> stage_summary[<span class="fu">sapply</span>(<span class="fu">strsplit</span>(stage_summary, <span class="st">&quot;, &quot;</span>), length) <span class="sc">&gt;</span> <span class="dv">1</span>]</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Species with multiple life stages (first 8):</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; Species with multiple life stages (first 8):</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(multi_stage, <span class="dv">8</span>))</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt;           Alosa pseudoharengus                   Gadus morhua </span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; &quot;adult, yearling, yoy, larval&quot;  &quot;juvenile_and_adult, unknown&quot; </span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt;                Clupea harengus            Lepomis macrochirus </span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt;         &quot;yoy, adult, juvenile&quot;              &quot;adult, juvenile&quot; </span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt;              Perca fluviatilus         Engraulis encrasicolus </span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; &quot;1_gram, 100_gram, larval_yoy&quot;  &quot;adult, egg_larval, juvenile&quot; </span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt;               Esox masquinongy                Cololabis saira </span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt;              &quot;adult, juvenile&quot;              &quot;adult, juvenile&quot;</span></span></code></pre></div>
+<hr />
+</div>
+<div id="comparing-consumption-parameters-across-species" class="section level2">
+<h2>5. Comparing consumption parameters across species</h2>
+<p>The maximum consumption rate is governed by:</p>
+<p><span class="math display">\[C_{\max} = C_A \cdot W^{C_B} \cdot
+f(T)\]</span></p>
+<p>where <em>C</em><sub>A</sub> scales the intercept and
+<em>C</em><sub>B</sub> the weight exponent. Higher
+<em>C</em><sub>A</sub> values indicate a higher maximum ration relative
+to body weight.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Extract CA, CB, CEQ for all entries (first life stage)</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>param_table <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">names</span>(fish4_parameters), <span class="cf">function</span>(sp) {</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  entry <span class="ot">&lt;-</span> fish4_parameters[[sp]]</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  stage <span class="ot">&lt;-</span> <span class="fu">names</span>(entry<span class="sc">$</span>life_stages)[<span class="dv">1</span>]</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  cons  <span class="ot">&lt;-</span> entry<span class="sc">$</span>life_stages[[stage]]<span class="sc">$</span>consumption</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>    <span class="at">Species    =</span> sp,</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>    <span class="at">Stage      =</span> stage,</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>    <span class="at">CEQ        =</span> cons<span class="sc">$</span>CEQ  <span class="sc">%||%</span> <span class="cn">NA</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>    <span class="at">CA         =</span> cons<span class="sc">$</span>CA   <span class="sc">%||%</span> <span class="cn">NA</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>    <span class="at">CB         =</span> cons<span class="sc">$</span>CB   <span class="sc">%||%</span> <span class="cn">NA</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>    <span class="at">CTO        =</span> cons<span class="sc">$</span>CTO  <span class="sc">%||%</span> <span class="cn">NA</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>    <span class="at">CTM        =</span> cons<span class="sc">$</span>CTM  <span class="sc">%||%</span> <span class="cn">NA</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>    <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>  )</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>}))</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co"># Show top 10 by CA (highest maximum ration)</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>param_table_sorted <span class="ot">&lt;-</span> param_table[<span class="fu">order</span>(<span class="sc">-</span>param_table<span class="sc">$</span>CA, <span class="at">na.last =</span> <span class="cn">TRUE</span>), ]</span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a>  <span class="fu">head</span>(param_table_sorted[, <span class="fu">c</span>(<span class="st">&quot;Species&quot;</span>, <span class="st">&quot;Stage&quot;</span>, <span class="st">&quot;CEQ&quot;</span>, <span class="st">&quot;CA&quot;</span>, <span class="st">&quot;CB&quot;</span>, <span class="st">&quot;CTO&quot;</span>, <span class="st">&quot;CTM&quot;</span>)], <span class="dv">10</span>),</span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">&quot;Top 10 entries by CA (maximum consumption coefficient)&quot;</span>,</span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a>  <span class="at">digits  =</span> <span class="dv">4</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a>)</span></code></pre></div>
+<table>
+<caption>Top 10 entries by CA (maximum consumption
+coefficient)</caption>
+<colgroup>
+<col width="3%" />
+<col width="35%" />
+<col width="24%" />
+<col width="5%" />
+<col width="8%" />
+<col width="10%" />
+<col width="6%" />
+<col width="6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Species</th>
+<th align="left">Stage</th>
+<th align="right">CEQ</th>
+<th align="right">CA</th>
+<th align="right">CB</th>
+<th align="right">CTO</th>
+<th align="right">CTM</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">47</td>
+<td align="left">Notropis bairdi</td>
+<td align="left">unknown</td>
+<td align="right">2</td>
+<td align="right">4.0330</td>
+<td align="right">-1.0589</td>
+<td align="right">35.0</td>
+<td align="right">41.6</td>
+</tr>
+<tr class="even">
+<td align="left">43</td>
+<td align="left">Fundulus zebrinus</td>
+<td align="left">unknown</td>
+<td align="right">2</td>
+<td align="right">3.5999</td>
+<td align="right">-1.1602</td>
+<td align="right">35.0</td>
+<td align="right">43.0</td>
+</tr>
+<tr class="odd">
+<td align="left">8</td>
+<td align="left">Coregonus hoyi</td>
+<td align="left">adult</td>
+<td align="right">2</td>
+<td align="right">1.6100</td>
+<td align="right">-0.3200</td>
+<td align="right">16.8</td>
+<td align="right">26.0</td>
+</tr>
+<tr class="even">
+<td align="left">26</td>
+<td align="left">Coregonus spp.</td>
+<td align="left">unknown</td>
+<td align="right">2</td>
+<td align="right">1.6100</td>
+<td align="right">-0.3200</td>
+<td align="right">16.8</td>
+<td align="right">26.0</td>
+</tr>
+<tr class="odd">
+<td align="left">31</td>
+<td align="left">Coregonus clupeaformis</td>
+<td align="left">adult</td>
+<td align="right">2</td>
+<td align="right">1.6100</td>
+<td align="right">-0.3200</td>
+<td align="right">16.8</td>
+<td align="right">26.0</td>
+</tr>
+<tr class="even">
+<td align="left">7</td>
+<td align="left">Hypophthalmichthys nobilis</td>
+<td align="left">unknown</td>
+<td align="right">2</td>
+<td align="right">1.5400</td>
+<td align="right">-0.2870</td>
+<td align="right">26.0</td>
+<td align="right">38.0</td>
+</tr>
+<tr class="odd">
+<td align="left">55</td>
+<td align="left">Hypophthalmichthys molitrix</td>
+<td align="left">unknown</td>
+<td align="right">2</td>
+<td align="right">1.5400</td>
+<td align="right">-0.2870</td>
+<td align="right">29.0</td>
+<td align="right">43.0</td>
+</tr>
+<tr class="even">
+<td align="left">3</td>
+<td align="left">Brevoortia tyrannus</td>
+<td align="left">juvenile_and_adult</td>
+<td align="right">3</td>
+<td align="right">1.2940</td>
+<td align="right">-0.3120</td>
+<td align="right">28.0</td>
+<td align="right">29.0</td>
+</tr>
+<tr class="odd">
+<td align="left">70</td>
+<td align="left">Pomoxis annularis</td>
+<td align="left">adult</td>
+<td align="right">2</td>
+<td align="right">1.2589</td>
+<td align="right">-0.6610</td>
+<td align="right">24.0</td>
+<td align="right">32.0</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">Alosa pseudoharengus</td>
+<td align="left">adult</td>
+<td align="right">3</td>
+<td align="right">0.8464</td>
+<td align="right">-0.3000</td>
+<td align="right">16.0</td>
+<td align="right">18.0</td>
+</tr>
+</tbody>
+</table>
+<div id="temperature-optima-distribution" class="section level3">
+<h3>Temperature optima distribution</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>cto_vals <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(param_table<span class="sc">$</span>CTO)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="fu">hist</span>(cto_vals,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>     <span class="at">breaks =</span> <span class="dv">15</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>     <span class="at">main   =</span> <span class="st">&quot;Consumption temperature optima (CTO)&quot;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>     <span class="at">xlab   =</span> <span class="st">&quot;CTO (°C)&quot;</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>     <span class="at">ylab   =</span> <span class="st">&quot;Number of entries&quot;</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>     <span class="at">col    =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>     <span class="at">border =</span> <span class="st">&quot;white&quot;</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">median</span>(cto_vals), <span class="at">col =</span> <span class="st">&quot;tomato&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">paste</span>(<span class="st">&quot;Median =&quot;</span>, <span class="fu">round</span>(<span class="fu">median</span>(cto_vals), <span class="dv">1</span>), <span class="st">&quot;°C&quot;</span>),</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">&quot;tomato&quot;</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div>
+<div class="float">
+<img role="img" aria-label="Distribution of consumption temperature optima (CTO) across all database entries." src="data:image/png;base64,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" alt="Distribution of consumption temperature optima (CTO) across all database entries." />
+<div class="figcaption">Distribution of consumption temperature optima
+(CTO) across all database entries.</div>
+</div>
+<hr />
+</div>
+</div>
+<div id="predator-energy-density-equations" class="section level2">
+<h2>6. Predator energy density equations</h2>
+<p>The database includes three equations for predator (fish) energy
+density:</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>PREDEDEQ</th>
+<th>Form</th>
+<th>Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Daily interpolation</td>
+<td><code>ED_data</code> or <code>ED_ini</code> +
+<code>ED_end</code></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Piecewise linear in weight</td>
+<td><code>Alpha1</code>, <code>Beta1</code>, <code>Alpha2</code>,
+<code>Beta2</code>, <code>Cutoff</code></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Power function of weight</td>
+<td><code>Alpha1</code>, <code>Beta1</code></td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>prededeq_vals <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">names</span>(fish4_parameters), <span class="cf">function</span>(sp) {</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  entry <span class="ot">&lt;-</span> fish4_parameters[[sp]]</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  stage <span class="ot">&lt;-</span> <span class="fu">names</span>(entry<span class="sc">$</span>life_stages)[<span class="dv">1</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  entry<span class="sc">$</span>life_stages[[stage]]<span class="sc">$</span>predator<span class="sc">$</span>PREDEDEQ <span class="sc">%||%</span> <span class="cn">NA</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>})</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Distribution of PREDEDEQ across database:</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt; Distribution of PREDEDEQ across database:</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">table</span>(prededeq_vals, <span class="at">useNA =</span> <span class="st">&quot;ifany&quot;</span>))</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt; prededeq_vals</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt;  1  2  3 </span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt; 61 11  1</span></span></code></pre></div>
+<p>When <code>PREDEDEQ = 1</code> (the most common), the user must
+supply <code>ED_ini</code> and <code>ED_end</code> (or a full
+<code>ED_data</code> vector) since daily energy density varies with
+season and condition factor. See the <em>Introduction</em> vignette for
+an example.</p>
+<hr />
+</div>
+<div id="building-a-model-directly-from-the-database" class="section level2">
+<h2>7. Building a model directly from the database</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Retrieve brown trout if available, otherwise fall back to first salmonid</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>target_sp <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">&quot;Salmo trutta|brown trout&quot;</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>                  <span class="fu">names</span>(fish4_parameters),</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>                  <span class="at">value =</span> <span class="cn">TRUE</span>, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(target_sp) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>  target_sp <span class="ot">&lt;-</span> onco_keys[<span class="dv">1</span>]   <span class="co"># Fall back to first Oncorhynchus</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>}</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>target_sp <span class="ot">&lt;-</span> target_sp[<span class="dv">1</span>]</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Using species:&quot;</span>, target_sp, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt; Using species: Salmo trutta</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>entry  <span class="ot">&lt;-</span> fish4_parameters[[target_sp]]</span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>stage  <span class="ot">&lt;-</span> <span class="fu">names</span>(entry<span class="sc">$</span>life_stages)[<span class="dv">1</span>]</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a>params <span class="ot">&lt;-</span> entry<span class="sc">$</span>life_stages[[stage]]</span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a>info   <span class="ot">&lt;-</span> entry<span class="sc">$</span>species_info</span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a>info<span class="sc">$</span>life_stage <span class="ot">&lt;-</span> stage</span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co"># Minimal 60-day setup</span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a>days_short <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">60</span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a>bio_db <span class="ot">&lt;-</span> <span class="fu">Bioenergetic</span>(</span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a>  <span class="at">species_params     =</span> params,</span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a>  <span class="at">species_info       =</span> info,</span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a>  <span class="at">environmental_data =</span> <span class="fu">list</span>(</span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a>    <span class="at">temperature =</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> days_short,</span>
+<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a>                             <span class="at">Temperature =</span> <span class="dv">10</span> <span class="sc">+</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">sin</span>(pi <span class="sc">*</span> days_short <span class="sc">/</span> <span class="dv">60</span>))</span>
+<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a>  ),</span>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a>  <span class="at">diet_data =</span> <span class="fu">list</span>(</span>
+<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a>    <span class="at">proportions =</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> days_short, <span class="at">Invertebrates =</span> <span class="dv">1</span>),</span>
+<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a>    <span class="at">prey_names  =</span> <span class="st">&quot;Invertebrates&quot;</span>,</span>
+<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a>    <span class="at">energies    =</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> days_short, <span class="at">Invertebrates =</span> <span class="dv">2800</span>)</span>
+<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a>  ),</span>
+<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a>  <span class="at">simulation_settings =</span> <span class="fu">list</span>(<span class="at">initial_weight =</span> <span class="dv">50</span>, <span class="at">duration =</span> <span class="dv">60</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" tabindex="-1"></a>)</span>
+<span id="cb10-35"><a href="#cb10-35" tabindex="-1"></a></span>
+<span id="cb10-36"><a href="#cb10-36" tabindex="-1"></a><span class="co"># Supply energy density bounds for PREDEDEQ = 1</span></span>
+<span id="cb10-37"><a href="#cb10-37" tabindex="-1"></a>bio_db<span class="sc">$</span>species_params<span class="sc">$</span>predator<span class="sc">$</span>ED_ini <span class="ot">&lt;-</span> <span class="dv">4000</span></span>
+<span id="cb10-38"><a href="#cb10-38" tabindex="-1"></a>bio_db<span class="sc">$</span>species_params<span class="sc">$</span>predator<span class="sc">$</span>ED_end <span class="ot">&lt;-</span> <span class="dv">4500</span></span>
+<span id="cb10-39"><a href="#cb10-39" tabindex="-1"></a></span>
+<span id="cb10-40"><a href="#cb10-40" tabindex="-1"></a>res_db <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio_db,</span>
+<span id="cb10-41"><a href="#cb10-41" tabindex="-1"></a>                  <span class="at">fit_to    =</span> <span class="st">&quot;Weight&quot;</span>,</span>
+<span id="cb10-42"><a href="#cb10-42" tabindex="-1"></a>                  <span class="at">fit_value =</span> <span class="dv">80</span>,</span>
+<span id="cb10-43"><a href="#cb10-43" tabindex="-1"></a>                  <span class="at">strategy  =</span> <span class="st">&quot;binary_search&quot;</span>,</span>
+<span id="cb10-44"><a href="#cb10-44" tabindex="-1"></a>                  <span class="at">verbose   =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-45"><a href="#cb10-45" tabindex="-1"></a></span>
+<span id="cb10-46"><a href="#cb10-46" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Estimated p : %.4f  |  Final weight : %.1f g</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb10-47"><a href="#cb10-47" tabindex="-1"></a>            res_db<span class="sc">$</span>summary<span class="sc">$</span>p_value,</span>
+<span id="cb10-48"><a href="#cb10-48" tabindex="-1"></a>            res_db<span class="sc">$</span>summary<span class="sc">$</span>final_weight))</span>
+<span id="cb10-49"><a href="#cb10-49" tabindex="-1"></a><span class="co">#&gt; Estimated p : 0.6651  |  Final weight : 80.0 g</span></span></code></pre></div>
+<hr />
+</div>
+<div id="adding-a-custom-species" class="section level2">
+<h2>8. Adding a custom species</h2>
+<p>If your species is not in the database, supply parameters manually in
+the same list structure and pass them directly to
+<code>Bioenergetic()</code>. See the <em>Introduction</em> vignette for
+a full example with Stewart &amp; Ibarra (1991) parameters for Chinook
+salmon.</p>
+<hr />
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>Deslauriers D, Chipps SR, Breck JE, Rice JA, Madenjian CP (2017).
+Fish Bioenergetics 4.0: An R-Based Modeling Application.
+<em>Fisheries</em> 42(11):586–596. <a href="https://doi.org/10.1080/03632415.2017.1377558" class="uri">https://doi.org/10.1080/03632415.2017.1377558</a></p>
+<p>Hanson PC, Johnson TB, Schindler DE, Kitchell JF (1997). Fish
+Bioenergetics 3.0. University of Wisconsin Sea Grant Institute, Report
+WISSG-97-250.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

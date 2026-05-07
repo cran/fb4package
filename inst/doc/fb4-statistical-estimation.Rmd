@@ -1,0 +1,324 @@
+---
+title: "Statistical estimation strategies"
+author: "Hans Ttito"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Statistical estimation strategies}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse  = TRUE,
+  comment   = "#>",
+  fig.width = 7,
+  fig.height = 5,
+  message   = FALSE,
+  warning   = FALSE
+)
+library(fb4package)
+```
+
+## Overview
+
+`run_fb4()` supports four strategies for estimating the proportion of maximum
+consumption (*p*):
+
+| Strategy | Input required | Output |
+|---|---|---|
+| `"binary_search"` | target final weight | point estimate of *p* |
+| `"mle"` | observed final weights | *p* + SE + 95 % CI |
+| `"bootstrap"` | observed final weights | *p* + SD + bootstrap CI |
+| `"hierarchical"` | individual mark-recapture data | population mean and SD of *p* |
+
+Every strategy takes a `Bioenergetic` object as input and returns an
+`fb4_result` object with the same structure.
+
+---
+
+## Shared setup
+
+The Bioenergetic object below is used by all four strategies. It represents
+an adult Chinook salmon cohort (*Oncorhynchus tshawytscha*) over a 100-day
+growing season.
+
+```{r bio-setup}
+data(fish4_parameters)
+
+chinook_db <- fish4_parameters[["Oncorhynchus tshawytscha"]]
+stage      <- names(chinook_db$life_stages)[1]
+sp_params  <- chinook_db$life_stages[[stage]]
+sp_info    <- chinook_db$species_info
+
+days <- 1:100
+temp_data <- data.frame(
+  Day         = days,
+  Temperature = round(10 + 5 * sin(2 * pi * (days - 60) / 365), 2)
+)
+diet_data <- list(
+  proportions = data.frame(Day = days, Alewife = 0.7, Shrimp = 0.3),
+  prey_names  = c("Alewife", "Shrimp"),
+  energies    = data.frame(Day = days, Alewife = 4900, Shrimp = 3200)
+)
+
+bio <- Bioenergetic(
+  species_params      = sp_params,
+  species_info        = sp_info,
+  environmental_data  = list(temperature = temp_data),
+  diet_data           = diet_data,
+  simulation_settings = list(initial_weight = 1800, duration = 100)
+)
+bio$species_params$predator$ED_ini <- 4500
+bio$species_params$predator$ED_end <- 5500
+```
+
+Observed final weights simulated around a target of 3 000 g are used by the
+likelihood and bootstrap strategies:
+
+```{r obs-weights}
+set.seed(42)
+obs_weights <- rnorm(30, mean = 3000, sd = 80)
+```
+
+---
+
+## Strategy 1 — Binary search
+
+Binary search finds the *p* that produces a specified target weight. Use it
+when a point estimate is enough and you have a known growth target.
+
+```{r binary-search}
+res_bs <- run_fb4(bio,
+                  strategy  = "binary_search",
+                  fit_to    = "Weight",
+                  fit_value = 3000)
+
+cat("p estimate  :", round(res_bs$summary$p_value, 4), "\n")
+cat("Final weight:", round(res_bs$summary$final_weight, 1), "g\n")
+```
+
+---
+
+## Strategy 2 — Maximum Likelihood Estimation
+
+MLE finds the *p* that maximises the likelihood of observing the supplied
+weights, assuming a log-normal distribution around the predicted weight. It
+returns a standard error and a 95 % confidence interval via the profile
+likelihood.
+
+```{r mle, cache=TRUE}
+res_mle <- run_fb4(bio,
+                   strategy         = "mle",
+                   fit_to           = "Weight",
+                   observed_weights = obs_weights)
+
+cat("p estimate :", round(res_mle$summary$p_value, 4), "\n")
+cat("SE         :", round(res_mle$summary$p_se,    4), "\n")
+cat("Converged  :", res_mle$summary$converged, "\n")
+```
+
+---
+
+## Strategy 3 — Bootstrap
+
+Bootstrap resamples the observed weights and re-fits the model at each
+replicate, producing a distribution of *p* estimates without assuming a
+particular form for the weight distribution.
+
+```{r bootstrap, cache=TRUE}
+res_boot <- run_fb4(bio,
+                    strategy         = "bootstrap",
+                    fit_to           = "Weight",
+                    observed_weights = obs_weights,
+                    n_bootstrap      = 100,
+                    upper            = 1,
+                    parallel         = FALSE)
+
+cat("p mean :", round(res_boot$summary$p_mean, 4), "\n")
+cat("p SD   :", round(res_boot$summary$p_sd,   4), "\n")
+```
+
+---
+
+## Strategy 4 — Hierarchical model (mark-recapture)
+
+### Biological context
+
+The hierarchical strategy is designed for **mark-recapture bioenergetics**:
+individual fish are tagged, weighed at release (initial weight), and
+re-weighed at recapture (final weight) after a fixed monitoring period. The
+model estimates a *p* value for each individual, then pools those estimates
+into a **population-level distribution** of feeding levels.
+
+This answers two biological questions:
+- What is the *average* feeding level (*p*) of the population under the
+  observed environmental conditions?
+- How *variable* is individual feeding behaviour within that population?
+
+### Simulating a mark-recapture data set
+
+First we use binary search to find the *p* that is consistent with this
+`bio` object (initial weight 1 800 g, 100 days). That value becomes the
+centre of the simulated population distribution.
+
+```{r mr-ref-p}
+res_ref <- run_fb4(bio,
+                   strategy  = "binary_search",
+                   fit_to    = "Weight",
+                   fit_value = 2500)
+ref_p <- res_ref$summary$p_value
+cat("Reference p (target 2 500 g):", round(ref_p, 4), "\n")
+```
+
+```{r mr-simulate}
+set.seed(123)
+n_fish <- 20
+
+# Cohort: individual initial weights varying ± 15 % around 1 800 g
+initial_weights <- round(runif(n_fish, min = 1800 * 0.85, max = 1800 * 1.15))
+
+# Each fish has its own feeding level drawn from a population distribution
+# centred on the reference p estimated above (sigma_p = 0.06)
+true_p <- pmax(0.3, pmin(1.5, rnorm(n_fish, mean = ref_p, sd = 0.06)))
+
+# Simulate final weights: run individual direct simulations + measurement noise
+final_weights <- vapply(seq_len(n_fish), function(i) {
+  bio_i <- bio
+  bio_i$simulation_settings$initial_weight <- initial_weights[i]
+  res_i <- run_fb4(bio_i, strategy = "direct", p_value = true_p[i])
+  round(res_i$summary$final_weight * rnorm(1, mean = 1, sd = 0.02), 1)
+}, numeric(1))
+
+mr_data <- data.frame(
+  individual_id  = sprintf("fish_%02d", seq_len(n_fish)),
+  initial_weight = initial_weights,
+  final_weight   = final_weights
+)
+
+head(mr_data, 6)
+```
+
+### Running the hierarchical model
+
+```{r hierarchical, cache=TRUE, dependson=c("mr-ref-p", "mr-simulate")}
+res_hier <- run_fb4(
+  x                = bio,
+  strategy         = "hierarchical",
+  backend          = "tmb",
+  fit_to           = "Weight",
+  observed_weights = mr_data
+)
+
+cat(sprintf("Population mean p  (mu_p)   : %.4f\n", res_hier$summary$mu_p_estimate))
+cat(sprintf("Population SD  p  (sigma_p) : %.4f\n", res_hier$summary$sigma_p_estimate))
+cat(sprintf("Number of individuals       : %d\n",   res_hier$summary$n_individuals))
+cat(sprintf("Converged                   : %s\n",   res_hier$summary$converged))
+```
+
+The data were generated with a theoretical population mean of
+*p* = `r round(ref_p, 3)` (the binary-search estimate for a 2 500 g target)
+and SD = 0.06. Because only `r n_fish` fish were drawn, the realised sample
+mean is `r round(mean(true_p), 3)` — this is the value `mu_p` should
+recover. `sigma_p` reflects both the true individual variation (SD = 0.06)
+and the 2 % measurement noise added to the final weights.
+
+### Assumptions and limitations
+
+For `mu_p` and `sigma_p` to be biologically meaningful, the study design
+must satisfy a few conditions.
+
+All fish in the data set must belong to the same species and life stage and
+must have experienced the same environmental conditions (temperature, diet).
+If you mix life stages or fish from different habitats, `mu_p` becomes a
+statistical average with no clear ecological interpretation.
+
+The model also assumes a fixed monitoring period: every individual is
+tracked for the same `n_days`. Variable recapture intervals are not
+currently supported.
+
+On the statistical side, individual *p* values are modelled on the log
+scale, so the implied population distribution is approximately log-normal.
+This guarantees *p* > 0 and works well when individual variation is
+moderate. The model accepts a covariate matrix (`covariates_matrix`) if you
+want to explain part of the variation in *p* by body size, sex, or
+tagging location; without covariates, all unexplained variation accumulates
+in `sigma_p`.
+
+Finally, the hierarchical model requires `backend = "tmb"` — automatic
+differentiation via TMB is needed for the mixed-effects likelihood. The
+pure-R backend does not support this strategy.
+
+---
+
+## Comparing strategies
+
+### Strategies 1–3: single-population estimates
+
+Binary search, MLE, and bootstrap all answer the same question — *what p
+produces the observed growth of a representative fish?* — and can therefore
+be compared numerically. All three use the same `bio` object
+(`initial_weight = 1800 g`, target or observed weights ≈ 3 000 g).
+
+```{r compare-123, echo=FALSE}
+comp123 <- data.frame(
+  Strategy    = c("binary_search", "mle", "bootstrap"),
+  p_estimate  = round(c(res_bs$summary$p_value,
+                         res_mle$summary$p_value,
+                         res_boot$summary$p_mean), 4),
+  Uncertainty = round(c(NA,
+                         res_mle$summary$p_se,
+                         res_boot$summary$p_sd), 4),
+  Type        = c("none (point estimate)",
+                  "SE (asymptotic)",
+                  "SD (non-parametric)"),
+  stringsAsFactors = FALSE
+)
+knitr::kable(comp123,
+             col.names = c("Strategy", "p estimate", "SE / SD",
+                           "Uncertainty type"),
+             align  = c("l", "r", "r", "l"),
+             caption = "Strategies 1–3 fitted to the same data (Chinook salmon, 100-day simulation, target weight ≈ 3 000 g).")
+```
+
+### Strategy 4: population-level distribution
+
+The hierarchical model answers a **different question**: not the *p* of a
+representative individual, but the *distribution* of *p* across a
+population of tagged fish. Its output (`mu_p`, `sigma_p`) is not
+numerically comparable to the single estimates above because the input data
+differ (each fish has its own initial and final weight) and the parameter
+being estimated is a population mean, not an individual feeding level.
+
+```{r compare-hier, echo=FALSE}
+comp_hier <- data.frame(
+  Parameter   = c("mu_p (population mean)",
+                  "sigma_p (population SD)",
+                  "n_individuals",
+                  "converged"),
+  Value       = c(round(res_hier$summary$mu_p_estimate,    4),
+                  round(res_hier$summary$sigma_p_estimate, 4),
+                  res_hier$summary$n_individuals,
+                  as.character(res_hier$summary$converged)),
+  stringsAsFactors = FALSE
+)
+knitr::kable(comp_hier,
+             col.names = c("Parameter", "Estimated value"),
+             align     = c("l", "r"),
+             caption   = paste("Hierarchical model results for the simulated",
+                               "mark-recapture cohort (n =",
+                               res_hier$summary$n_individuals,
+                               "fish, true mu_p =", round(ref_p, 3), ")."))
+```
+
+---
+
+## References
+
+Deslauriers D, Chipps SR, Breck JE, Rice JA, Madenjian CP (2017). Fish
+Bioenergetics 4.0: An R-Based Modeling Application. *Fisheries* 42(11):586–596.
+
+Chipps SR, Wahl DH (2008). Bioenergetics modeling in the 21st century:
+reviewing new insights and revisiting old constraints. *Transactions of the
+American Fisheries Society* 137(1):298–313.

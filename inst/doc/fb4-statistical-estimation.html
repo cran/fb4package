@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Hans Ttito" />
+
+<meta name="date" content="2026-05-04" />
+
+<title>Statistical estimation strategies</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Statistical estimation strategies</h1>
+<h4 class="author">Hans Ttito</h4>
+<h4 class="date">2026-05-04</h4>
+
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p><code>run_fb4()</code> supports four strategies for estimating the
+proportion of maximum consumption (<em>p</em>):</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Strategy</th>
+<th>Input required</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>&quot;binary_search&quot;</code></td>
+<td>target final weight</td>
+<td>point estimate of <em>p</em></td>
+</tr>
+<tr class="even">
+<td><code>&quot;mle&quot;</code></td>
+<td>observed final weights</td>
+<td><em>p</em> + SE + 95 % CI</td>
+</tr>
+<tr class="odd">
+<td><code>&quot;bootstrap&quot;</code></td>
+<td>observed final weights</td>
+<td><em>p</em> + SD + bootstrap CI</td>
+</tr>
+<tr class="even">
+<td><code>&quot;hierarchical&quot;</code></td>
+<td>individual mark-recapture data</td>
+<td>population mean and SD of <em>p</em></td>
+</tr>
+</tbody>
+</table>
+<p>Every strategy takes a <code>Bioenergetic</code> object as input and
+returns an <code>fb4_result</code> object with the same structure.</p>
+<hr />
+</div>
+<div id="shared-setup" class="section level2">
+<h2>Shared setup</h2>
+<p>The Bioenergetic object below is used by all four strategies. It
+represents an adult Chinook salmon cohort (<em>Oncorhynchus
+tshawytscha</em>) over a 100-day growing season.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">data</span>(fish4_parameters)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>chinook_db <span class="ot">&lt;-</span> fish4_parameters[[<span class="st">&quot;Oncorhynchus tshawytscha&quot;</span>]]</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>stage      <span class="ot">&lt;-</span> <span class="fu">names</span>(chinook_db<span class="sc">$</span>life_stages)[<span class="dv">1</span>]</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>sp_params  <span class="ot">&lt;-</span> chinook_db<span class="sc">$</span>life_stages[[stage]]</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>sp_info    <span class="ot">&lt;-</span> chinook_db<span class="sc">$</span>species_info</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>days <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>temp_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>  <span class="at">Day         =</span> days,</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  <span class="at">Temperature =</span> <span class="fu">round</span>(<span class="dv">10</span> <span class="sc">+</span> <span class="dv">5</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> (days <span class="sc">-</span> <span class="dv">60</span>) <span class="sc">/</span> <span class="dv">365</span>), <span class="dv">2</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>)</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>diet_data <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>  <span class="at">proportions =</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> days, <span class="at">Alewife =</span> <span class="fl">0.7</span>, <span class="at">Shrimp =</span> <span class="fl">0.3</span>),</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>  <span class="at">prey_names  =</span> <span class="fu">c</span>(<span class="st">&quot;Alewife&quot;</span>, <span class="st">&quot;Shrimp&quot;</span>),</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  <span class="at">energies    =</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> days, <span class="at">Alewife =</span> <span class="dv">4900</span>, <span class="at">Shrimp =</span> <span class="dv">3200</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>)</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>bio <span class="ot">&lt;-</span> <span class="fu">Bioenergetic</span>(</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>  <span class="at">species_params      =</span> sp_params,</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>  <span class="at">species_info        =</span> sp_info,</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>  <span class="at">environmental_data  =</span> <span class="fu">list</span>(<span class="at">temperature =</span> temp_data),</span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>  <span class="at">diet_data           =</span> diet_data,</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>  <span class="at">simulation_settings =</span> <span class="fu">list</span>(<span class="at">initial_weight =</span> <span class="dv">1800</span>, <span class="at">duration =</span> <span class="dv">100</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>)</span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>bio<span class="sc">$</span>species_params<span class="sc">$</span>predator<span class="sc">$</span>ED_ini <span class="ot">&lt;-</span> <span class="dv">4500</span></span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>bio<span class="sc">$</span>species_params<span class="sc">$</span>predator<span class="sc">$</span>ED_end <span class="ot">&lt;-</span> <span class="dv">5500</span></span></code></pre></div>
+<p>Observed final weights simulated around a target of 3 000 g are used
+by the likelihood and bootstrap strategies:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>obs_weights <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="dv">3000</span>, <span class="at">sd =</span> <span class="dv">80</span>)</span></code></pre></div>
+<hr />
+</div>
+<div id="strategy-1-binary-search" class="section level2">
+<h2>Strategy 1 — Binary search</h2>
+<p>Binary search finds the <em>p</em> that produces a specified target
+weight. Use it when a point estimate is enough and you have a known
+growth target.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>res_bs <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio,</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                  <span class="at">strategy  =</span> <span class="st">&quot;binary_search&quot;</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>                  <span class="at">fit_to    =</span> <span class="st">&quot;Weight&quot;</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>                  <span class="at">fit_value =</span> <span class="dv">3000</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;p estimate  :&quot;</span>, <span class="fu">round</span>(res_bs<span class="sc">$</span>summary<span class="sc">$</span>p_value, <span class="dv">4</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; p estimate  : 0.9095</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Final weight:&quot;</span>, <span class="fu">round</span>(res_bs<span class="sc">$</span>summary<span class="sc">$</span>final_weight, <span class="dv">1</span>), <span class="st">&quot;g</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; Final weight: 3000 g</span></span></code></pre></div>
+<hr />
+</div>
+<div id="strategy-2-maximum-likelihood-estimation" class="section level2">
+<h2>Strategy 2 — Maximum Likelihood Estimation</h2>
+<p>MLE finds the <em>p</em> that maximises the likelihood of observing
+the supplied weights, assuming a log-normal distribution around the
+predicted weight. It returns a standard error and a 95 % confidence
+interval via the profile likelihood.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>res_mle <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio,</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>                   <span class="at">strategy         =</span> <span class="st">&quot;mle&quot;</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>                   <span class="at">fit_to           =</span> <span class="st">&quot;Weight&quot;</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>                   <span class="at">observed_weights =</span> obs_weights)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;p estimate :&quot;</span>, <span class="fu">round</span>(res_mle<span class="sc">$</span>summary<span class="sc">$</span>p_value, <span class="dv">4</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; p estimate : 0.9106</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;SE         :&quot;</span>, <span class="fu">round</span>(res_mle<span class="sc">$</span>summary<span class="sc">$</span>p_se,    <span class="dv">4</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; SE         : NA</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Converged  :&quot;</span>, res_mle<span class="sc">$</span>summary<span class="sc">$</span>converged, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; Converged  : TRUE</span></span></code></pre></div>
+<hr />
+</div>
+<div id="strategy-3-bootstrap" class="section level2">
+<h2>Strategy 3 — Bootstrap</h2>
+<p>Bootstrap resamples the observed weights and re-fits the model at
+each replicate, producing a distribution of <em>p</em> estimates without
+assuming a particular form for the weight distribution.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>res_boot <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio,</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>                    <span class="at">strategy         =</span> <span class="st">&quot;bootstrap&quot;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>                    <span class="at">fit_to           =</span> <span class="st">&quot;Weight&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>                    <span class="at">observed_weights =</span> obs_weights,</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>                    <span class="at">n_bootstrap      =</span> <span class="dv">100</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>                    <span class="at">upper            =</span> <span class="dv">1</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>                    <span class="at">parallel         =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;p mean :&quot;</span>, <span class="fu">round</span>(res_boot<span class="sc">$</span>summary<span class="sc">$</span>p_mean, <span class="dv">4</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; p mean : 0.9111</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;p SD   :&quot;</span>, <span class="fu">round</span>(res_boot<span class="sc">$</span>summary<span class="sc">$</span>p_sd,   <span class="dv">4</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; p SD   : 0.0052</span></span></code></pre></div>
+<hr />
+</div>
+<div id="strategy-4-hierarchical-model-mark-recapture" class="section level2">
+<h2>Strategy 4 — Hierarchical model (mark-recapture)</h2>
+<div id="biological-context" class="section level3">
+<h3>Biological context</h3>
+<p>The hierarchical strategy is designed for <strong>mark-recapture
+bioenergetics</strong>: individual fish are tagged, weighed at release
+(initial weight), and re-weighed at recapture (final weight) after a
+fixed monitoring period. The model estimates a <em>p</em> value for each
+individual, then pools those estimates into a <strong>population-level
+distribution</strong> of feeding levels.</p>
+<p>This answers two biological questions: - What is the <em>average</em>
+feeding level (<em>p</em>) of the population under the observed
+environmental conditions? - How <em>variable</em> is individual feeding
+behaviour within that population?</p>
+</div>
+<div id="simulating-a-mark-recapture-data-set" class="section level3">
+<h3>Simulating a mark-recapture data set</h3>
+<p>First we use binary search to find the <em>p</em> that is consistent
+with this <code>bio</code> object (initial weight 1 800 g, 100 days).
+That value becomes the centre of the simulated population
+distribution.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>res_ref <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio,</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                   <span class="at">strategy  =</span> <span class="st">&quot;binary_search&quot;</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>                   <span class="at">fit_to    =</span> <span class="st">&quot;Weight&quot;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>                   <span class="at">fit_value =</span> <span class="dv">2500</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>ref_p <span class="ot">&lt;-</span> res_ref<span class="sc">$</span>summary<span class="sc">$</span>p_value</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Reference p (target 2 500 g):&quot;</span>, <span class="fu">round</span>(ref_p, <span class="dv">4</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; Reference p (target 2 500 g): 0.7528</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>n_fish <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># Cohort: individual initial weights varying ± 15 % around 1 800 g</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>initial_weights <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">runif</span>(n_fish, <span class="at">min =</span> <span class="dv">1800</span> <span class="sc">*</span> <span class="fl">0.85</span>, <span class="at">max =</span> <span class="dv">1800</span> <span class="sc">*</span> <span class="fl">1.15</span>))</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co"># Each fish has its own feeding level drawn from a population distribution</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co"># centred on the reference p estimated above (sigma_p = 0.06)</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>true_p <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="fl">0.3</span>, <span class="fu">pmin</span>(<span class="fl">1.5</span>, <span class="fu">rnorm</span>(n_fish, <span class="at">mean =</span> ref_p, <span class="at">sd =</span> <span class="fl">0.06</span>)))</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co"># Simulate final weights: run individual direct simulations + measurement noise</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>final_weights <span class="ot">&lt;-</span> <span class="fu">vapply</span>(<span class="fu">seq_len</span>(n_fish), <span class="cf">function</span>(i) {</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>  bio_i <span class="ot">&lt;-</span> bio</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>  bio_i<span class="sc">$</span>simulation_settings<span class="sc">$</span>initial_weight <span class="ot">&lt;-</span> initial_weights[i]</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>  res_i <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio_i, <span class="at">strategy =</span> <span class="st">&quot;direct&quot;</span>, <span class="at">p_value =</span> true_p[i])</span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>  <span class="fu">round</span>(res_i<span class="sc">$</span>summary<span class="sc">$</span>final_weight <span class="sc">*</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">1</span>, <span class="at">sd =</span> <span class="fl">0.02</span>), <span class="dv">1</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>}, <span class="fu">numeric</span>(<span class="dv">1</span>))</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>mr_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>  <span class="at">individual_id  =</span> <span class="fu">sprintf</span>(<span class="st">&quot;fish_%02d&quot;</span>, <span class="fu">seq_len</span>(n_fish)),</span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>  <span class="at">initial_weight =</span> initial_weights,</span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a>  <span class="at">final_weight   =</span> final_weights</span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a>)</span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="fu">head</span>(mr_data, <span class="dv">6</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="co">#&gt;   individual_id initial_weight final_weight</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="co">#&gt; 1       fish_01           1685       2620.3</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="co">#&gt; 2       fish_02           1956       2720.2</span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="co">#&gt; 3       fish_03           1751       2565.9</span></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a><span class="co">#&gt; 4       fish_04           2007       2790.0</span></span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a><span class="co">#&gt; 5       fish_05           2038       2686.7</span></span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a><span class="co">#&gt; 6       fish_06           1555       2581.8</span></span></code></pre></div>
+</div>
+<div id="running-the-hierarchical-model" class="section level3">
+<h3>Running the hierarchical model</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>res_hier <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="at">x                =</span> bio,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">strategy         =</span> <span class="st">&quot;hierarchical&quot;</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="at">backend          =</span> <span class="st">&quot;tmb&quot;</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  <span class="at">fit_to           =</span> <span class="st">&quot;Weight&quot;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  <span class="at">observed_weights =</span> mr_data</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>)</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Population mean p  (mu_p)   : %.4f</span><span class="sc">\n</span><span class="st">&quot;</span>, res_hier<span class="sc">$</span>summary<span class="sc">$</span>mu_p_estimate))</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; Population mean p  (mu_p)   : 0.7447</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Population SD  p  (sigma_p) : %.4f</span><span class="sc">\n</span><span class="st">&quot;</span>, res_hier<span class="sc">$</span>summary<span class="sc">$</span>sigma_p_estimate))</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; Population SD  p  (sigma_p) : 0.0847</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Number of individuals       : %d</span><span class="sc">\n</span><span class="st">&quot;</span>,   res_hier<span class="sc">$</span>summary<span class="sc">$</span>n_individuals))</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; Number of individuals       : 20</span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Converged                   : %s</span><span class="sc">\n</span><span class="st">&quot;</span>,   res_hier<span class="sc">$</span>summary<span class="sc">$</span>converged))</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; Converged                   : TRUE</span></span></code></pre></div>
+<p>The data were generated with a theoretical population mean of
+<em>p</em> = 0.753 (the binary-search estimate for a 2 500 g target) and
+SD = 0.06. Because only 20 fish were drawn, the realised sample mean is
+0.746 — this is the value <code>mu_p</code> should recover.
+<code>sigma_p</code> reflects both the true individual variation (SD =
+0.06) and the 2 % measurement noise added to the final weights.</p>
+</div>
+<div id="assumptions-and-limitations" class="section level3">
+<h3>Assumptions and limitations</h3>
+<p>For <code>mu_p</code> and <code>sigma_p</code> to be biologically
+meaningful, the study design must satisfy a few conditions.</p>
+<p>All fish in the data set must belong to the same species and life
+stage and must have experienced the same environmental conditions
+(temperature, diet). If you mix life stages or fish from different
+habitats, <code>mu_p</code> becomes a statistical average with no clear
+ecological interpretation.</p>
+<p>The model also assumes a fixed monitoring period: every individual is
+tracked for the same <code>n_days</code>. Variable recapture intervals
+are not currently supported.</p>
+<p>On the statistical side, individual <em>p</em> values are modelled on
+the log scale, so the implied population distribution is approximately
+log-normal. This guarantees <em>p</em> &gt; 0 and works well when
+individual variation is moderate. The model accepts a covariate matrix
+(<code>covariates_matrix</code>) if you want to explain part of the
+variation in <em>p</em> by body size, sex, or tagging location; without
+covariates, all unexplained variation accumulates in
+<code>sigma_p</code>.</p>
+<p>Finally, the hierarchical model requires <code>backend = &quot;tmb&quot;</code>
+— automatic differentiation via TMB is needed for the mixed-effects
+likelihood. The pure-R backend does not support this strategy.</p>
+<hr />
+</div>
+</div>
+<div id="comparing-strategies" class="section level2">
+<h2>Comparing strategies</h2>
+<div id="strategies-13-single-population-estimates" class="section level3">
+<h3>Strategies 1–3: single-population estimates</h3>
+<p>Binary search, MLE, and bootstrap all answer the same question —
+<em>what p produces the observed growth of a representative fish?</em> —
+and can therefore be compared numerically. All three use the same
+<code>bio</code> object (<code>initial_weight = 1800 g</code>, target or
+observed weights ≈ 3 000 g).</p>
+<table>
+<caption>Strategies 1–3 fitted to the same data (Chinook salmon, 100-day
+simulation, target weight ≈ 3 000 g).</caption>
+<thead>
+<tr class="header">
+<th align="left">Strategy</th>
+<th align="right">p estimate</th>
+<th align="right">SE / SD</th>
+<th align="left">Uncertainty type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">binary_search</td>
+<td align="right">0.9095</td>
+<td align="right">NA</td>
+<td align="left">none (point estimate)</td>
+</tr>
+<tr class="even">
+<td align="left">mle</td>
+<td align="right">0.9106</td>
+<td align="right">NA</td>
+<td align="left">SE (asymptotic)</td>
+</tr>
+<tr class="odd">
+<td align="left">bootstrap</td>
+<td align="right">0.9111</td>
+<td align="right">0.0052</td>
+<td align="left">SD (non-parametric)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="strategy-4-population-level-distribution" class="section level3">
+<h3>Strategy 4: population-level distribution</h3>
+<p>The hierarchical model answers a <strong>different question</strong>:
+not the <em>p</em> of a representative individual, but the
+<em>distribution</em> of <em>p</em> across a population of tagged fish.
+Its output (<code>mu_p</code>, <code>sigma_p</code>) is not numerically
+comparable to the single estimates above because the input data differ
+(each fish has its own initial and final weight) and the parameter being
+estimated is a population mean, not an individual feeding level.</p>
+<table>
+<caption>Hierarchical model results for the simulated mark-recapture
+cohort (n = 20 fish, true mu_p = 0.753 ).</caption>
+<thead>
+<tr class="header">
+<th align="left">Parameter</th>
+<th align="right">Estimated value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">mu_p (population mean)</td>
+<td align="right">0.7447</td>
+</tr>
+<tr class="even">
+<td align="left">sigma_p (population SD)</td>
+<td align="right">0.0847</td>
+</tr>
+<tr class="odd">
+<td align="left">n_individuals</td>
+<td align="right">20</td>
+</tr>
+<tr class="even">
+<td align="left">converged</td>
+<td align="right">TRUE</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>Deslauriers D, Chipps SR, Breck JE, Rice JA, Madenjian CP (2017).
+Fish Bioenergetics 4.0: An R-Based Modeling Application.
+<em>Fisheries</em> 42(11):586–596.</p>
+<p>Chipps SR, Wahl DH (2008). Bioenergetics modeling in the 21st
+century: reviewing new insights and revisiting old constraints.
+<em>Transactions of the American Fisheries Society</em>
+137(1):298–313.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

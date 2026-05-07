@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Hans Ttito" />
+
+<meta name="date" content="2026-05-04" />
+
+<title>Temperature Sensitivity and Climate Change Scenarios</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Temperature Sensitivity and Climate Change
+Scenarios</h1>
+<h4 class="author">Hans Ttito</h4>
+<h4 class="date">2026-05-04</h4>
+
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>Temperature is the primary environmental driver in fish
+bioenergetics. Because metabolic rates scale non-linearly with
+temperature, even modest warming can have disproportionate effects on
+growth and consumption. This vignette uses <code>fb4package</code>
+to:</p>
+<ol style="list-style-type: decimal">
+<li>Quantify how final weight responds to temperature shifts
+(sensitivity analysis)</li>
+<li>Project growth outcomes under +1 °C, +2 °C, and +4 °C warming
+scenarios</li>
+<li>Identify thermal performance windows using the sensitivity plot</li>
+<li>Compare sensitivity across two ecologically contrasting species</li>
+</ol>
+<hr />
+</div>
+<div id="base-model-juvenile-chinook-salmon" class="section level2">
+<h2>1. Base model — juvenile Chinook salmon</h2>
+<p>We use 120-day summer conditions as the baseline.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Species parameters (Stewart &amp; Ibarra 1991)</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>sp_params_chinook <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="at">consumption =</span> <span class="fu">list</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    <span class="at">CEQ =</span> <span class="dv">2</span>, <span class="at">CA =</span> <span class="fl">0.303</span>, <span class="at">CB =</span> <span class="sc">-</span><span class="fl">0.275</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    <span class="at">CQ =</span> <span class="fl">3.0</span>, <span class="at">CTO =</span> <span class="fl">15.0</span>, <span class="at">CTM =</span> <span class="fl">20.0</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    <span class="at">CTL =</span> <span class="fl">24.0</span>, <span class="at">CK1 =</span> <span class="fl">0.1</span>, <span class="at">CK4 =</span> <span class="fl">0.13</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  ),</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  <span class="at">respiration =</span> <span class="fu">list</span>(</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    <span class="at">REQ =</span> <span class="dv">1</span>, <span class="at">RA =</span> <span class="fl">0.00264</span>, <span class="at">RB =</span> <span class="sc">-</span><span class="fl">0.217</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>    <span class="at">RQ =</span> <span class="fl">0.06818</span>, <span class="at">RTO =</span> <span class="fl">0.0234</span>, <span class="at">RTM =</span> <span class="fl">0.0</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    <span class="at">RTL =</span> <span class="fl">25.0</span>, <span class="at">RK1 =</span> <span class="fl">1.0</span>, <span class="at">RK4 =</span> <span class="fl">0.13</span>, <span class="at">RK5 =</span> <span class="fl">0.0</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  ),</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  <span class="at">activity  =</span> <span class="fu">list</span>(<span class="at">ACT =</span> <span class="fl">1.0</span>, <span class="at">BACT =</span> <span class="fl">0.0</span>),</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>  <span class="at">sda       =</span> <span class="fu">list</span>(<span class="at">SDA =</span> <span class="fl">0.172</span>),</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>  <span class="at">egestion  =</span> <span class="fu">list</span>(<span class="at">EGEQ =</span> <span class="dv">1</span>, <span class="at">FA =</span> <span class="fl">0.212</span>, <span class="at">FB =</span> <span class="sc">-</span><span class="fl">0.222</span>, <span class="at">FG =</span> <span class="fl">0.631</span>),</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  <span class="at">excretion =</span> <span class="fu">list</span>(<span class="at">EXEQ =</span> <span class="dv">1</span>, <span class="at">UA =</span> <span class="fl">0.0314</span>, <span class="at">UB =</span> <span class="fl">0.58</span>, <span class="at">UG =</span> <span class="sc">-</span><span class="fl">0.299</span>),</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  <span class="at">predator  =</span> <span class="fu">list</span>(</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>    <span class="at">PREDEDEQ =</span> <span class="dv">2</span>,</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>    <span class="at">Alpha1 =</span> <span class="dv">4500</span>, <span class="at">Beta1 =</span> <span class="fl">6.0</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>    <span class="at">Alpha2 =</span> <span class="dv">5500</span>, <span class="at">Beta2 =</span> <span class="fl">2.0</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>    <span class="at">Cutoff =</span> <span class="dv">250</span></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>  )</span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>)</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>days <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">120</span></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a><span class="co"># Baseline temperature: cool Pacific NW summer</span></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a>temp_base <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>  <span class="at">Day         =</span> days,</span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>  <span class="at">Temperature =</span> <span class="fu">round</span>(<span class="dv">7</span> <span class="sc">+</span> <span class="dv">6</span> <span class="sc">*</span> <span class="fu">sin</span>(pi <span class="sc">*</span> (days <span class="sc">-</span> <span class="dv">20</span>) <span class="sc">/</span> <span class="dv">120</span>), <span class="dv">2</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a>)</span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a><span class="co"># Diet</span></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a>diet_props  <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> days, <span class="at">Alewife =</span> <span class="fl">0.65</span>, <span class="at">Shrimp =</span> <span class="fl">0.35</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a>prey_energy <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> days, <span class="at">Alewife =</span> <span class="dv">4900</span>, <span class="at">Shrimp =</span> <span class="dv">3200</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a><span class="co"># Build baseline object</span></span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a>make_bio <span class="ot">&lt;-</span> <span class="cf">function</span>(temp_df, sp_params, <span class="at">initial_weight =</span> <span class="dv">5</span>) {</span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a>  bio <span class="ot">&lt;-</span> <span class="fu">Bioenergetic</span>(</span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a>    <span class="at">species_params     =</span> sp_params,</span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a>    <span class="at">species_info       =</span> <span class="fu">list</span>(<span class="at">scientific_name =</span> <span class="st">&quot;Oncorhynchus tshawytscha&quot;</span>,</span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a>                               <span class="at">common_name =</span> <span class="st">&quot;Chinook salmon&quot;</span>,</span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a>                               <span class="at">life_stage  =</span> <span class="st">&quot;juvenile&quot;</span>),</span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a>    <span class="at">environmental_data =</span> <span class="fu">list</span>(<span class="at">temperature =</span> temp_df),</span>
+<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a>    <span class="at">diet_data          =</span> <span class="fu">list</span>(</span>
+<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a>      <span class="at">proportions =</span> diet_props,</span>
+<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a>      <span class="at">prey_names  =</span> <span class="fu">c</span>(<span class="st">&quot;Alewife&quot;</span>, <span class="st">&quot;Shrimp&quot;</span>),</span>
+<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a>      <span class="at">energies    =</span> prey_energy</span>
+<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a>    ),</span>
+<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a>    <span class="at">simulation_settings =</span> <span class="fu">list</span>(<span class="at">initial_weight =</span> initial_weight, <span class="at">duration =</span> <span class="dv">120</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a>  )</span>
+<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a>  bio</span>
+<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a>}</span>
+<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a>bio_base <span class="ot">&lt;-</span> <span class="fu">make_bio</span>(temp_base, sp_params_chinook)</span>
+<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Baseline temperature range : %.1f – %.1f °C</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb1-58"><a href="#cb1-58" tabindex="-1"></a>            <span class="fu">min</span>(temp_base<span class="sc">$</span>Temperature), <span class="fu">max</span>(temp_base<span class="sc">$</span>Temperature)))</span>
+<span id="cb1-59"><a href="#cb1-59" tabindex="-1"></a><span class="co">#&gt; Baseline temperature range : 4.1 – 13.0 °C</span></span></code></pre></div>
+<hr />
+</div>
+<div id="manual-sensitivity-analysis-across-temperature-offsets" class="section level2">
+<h2>2. Manual sensitivity analysis across temperature offsets</h2>
+<p>We run binary search at each temperature offset and record the
+<em>p</em> required to achieve 40 g after 120 days (our target growth
+endpoint).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>offsets   <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>target_wt <span class="ot">&lt;-</span> <span class="dv">40</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>results_sens <span class="ot">&lt;-</span> <span class="fu">lapply</span>(offsets, <span class="cf">function</span>(delta) {</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  temp_shifted <span class="ot">&lt;-</span> temp_base</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  temp_shifted<span class="sc">$</span>Temperature <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">1</span>, temp_base<span class="sc">$</span>Temperature <span class="sc">+</span> delta)</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  bio_s <span class="ot">&lt;-</span> <span class="fu">make_bio</span>(temp_shifted, sp_params_chinook)</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  res   <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    <span class="fu">run_fb4</span>(bio_s,</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>            <span class="at">fit_to    =</span> <span class="st">&quot;Weight&quot;</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>            <span class="at">fit_value =</span> target_wt,</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>            <span class="at">strategy  =</span> <span class="st">&quot;binary_search&quot;</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>            <span class="at">verbose   =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NULL</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>  )</span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(res)) {</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">offset =</span> delta, <span class="at">p_value =</span> <span class="cn">NA</span>, <span class="at">final_weight =</span> <span class="cn">NA</span>))</span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>  }</span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>    <span class="at">offset       =</span> delta,</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>    <span class="at">p_value      =</span> <span class="fu">round</span>(res<span class="sc">$</span>summary<span class="sc">$</span>p_value,       <span class="dv">4</span>),</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>    <span class="at">final_weight =</span> <span class="fu">round</span>(res<span class="sc">$</span>summary<span class="sc">$</span>final_weight,   <span class="dv">1</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a>  )</span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a>})</span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a>sens_df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, results_sens)</span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a>  sens_df,</span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a>  <span class="at">caption    =</span> <span class="fu">paste0</span>(<span class="st">&quot;p-value required to achieve &quot;</span>, target_wt,</span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a>                      <span class="st">&quot; g across temperature offsets&quot;</span>),</span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a>  <span class="at">col.names  =</span> <span class="fu">c</span>(<span class="st">&quot;Temp. offset (°C)&quot;</span>, <span class="st">&quot;Estimated p&quot;</span>, <span class="st">&quot;Final weight (g)&quot;</span>)</span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a>)</span></code></pre></div>
+<table>
+<caption>p-value required to achieve 40 g across temperature
+offsets</caption>
+<thead>
+<tr class="header">
+<th align="right">Temp. offset (°C)</th>
+<th align="right">Estimated p</th>
+<th align="right">Final weight (g)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">-3</td>
+<td align="right">0.5100</td>
+<td align="right">40</td>
+</tr>
+<tr class="even">
+<td align="right">-2</td>
+<td align="right">0.4705</td>
+<td align="right">40</td>
+</tr>
+<tr class="odd">
+<td align="right">-1</td>
+<td align="right">0.4381</td>
+<td align="right">40</td>
+</tr>
+<tr class="even">
+<td align="right">0</td>
+<td align="right">0.4125</td>
+<td align="right">40</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0.3936</td>
+<td align="right">40</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">0.3821</td>
+<td align="right">40</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">0.3794</td>
+<td align="right">40</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">0.3887</td>
+<td align="right">40</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">plot</span>(sens_df<span class="sc">$</span>offset, sens_df<span class="sc">$</span>p_value,</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;b&quot;</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Temperature offset (°C)&quot;</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Estimated p-value&quot;</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Feeding level required to achieve target weight&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;gray50&quot;</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
+<div class="float">
+<img role="img" aria-label="Estimated p-value as a function of temperature offset." src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAHgCAMAAABNUi8GAAAA1VBMVEUAAAAAADoAAGYAOjoAOmYAOpAAZmYAZpAAZrY6AAA6ADo6AGY6OgA6OmY6OpA6ZmY6ZpA6ZrY6kLY6kNtGgrRmAABmADpmAGZmOgBmOjpmkJBmkLZmkNtmtrZmtttmtv9/f3+QOgCQZgCQZjqQkDqQkGaQkLaQtpCQttuQ27aQ29uQ2/+2ZgC2Zjq2ZpC2kDq2kGa225C227a229u22/+2/9u2///T09PbkDrbtmbbtpDb27bb29vb2//b/7bb////tmb/trb/25D/27b//7b//9v///+iTxYuAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAb20lEQVR4nO2dC3vjuHWG6ck4tXc36W4lbTdtsoqbtNnW6n06ZpO2Zj0y//9PCgHeQIoXEATAD+D3PtFEK1GHAPgaBwRvSU4IMMnWBSBkCgpKoKGgBBoKSqChoAQaCkqgoaAEGgpKoKGgBBoKSqChoAQaCkqgoaAEGgpKoKGgBBoKSqChoAQaCkqgoaAEGgpKoKGgBBoKSqChoAQaCkqgoaAEGgpKoKGgBBoKSqChoAQaCkqgoaAEGgpKoIESNE0qPnyeXvBSLPH+lNy/Ti41v4T+Ugt/dGmr8P4vM5VRSJO7Z5NiLVmH5vK361cKt3yNxlBQx4J++WGuMgqGgi5ah+by04IuXaM54Qo6H86hoHO0BdQrakWnkzJZm5vlS9TCmUUwAUxQNYn8c5Lcffd68/Yx+fhT24MWP/mn4tuPz/VyH5+bxqvUa35dfZElyVn5VBG0CPaHH5IPn/orvPtR/rT8/fWUHPJm5YPLlwWUIS/139sff5UkP/vb9i/hjz8UX/yirO5/f1N892NZgLo2eoXvrKMN2SlY3SJKqKYPuMiVXGRQGbrfLEoApXAXnV7EDrCCFh4IPn7uvC2are5ja0dK7p7rL+++6Qra/rrcuOVGaT/tCCq4fx1e4ZCgk8vnebspq3I2fXXWFrtcJimiNrX58Fmz8Oo6lJB1wdQWaX+k6JWJxcU3h/JPoN8sagClcPsVtOIsm+tT/vZYtVz9ttgID6/ir1oR9OMn8W/z5SXpCtr+uvjvh0qw7qeKoPef8v8ZWeGgoFPLS8ofFV+Wyx/yumh/8dr+5K9ev5wqB+6r2ugVXlmHGrIumNoi3QatSlf891n8U8SWK+g3ixpAKdx+U3wjaLklik/kX3X9tnVEEfQs2/khV7+U4eQS6q+rf8pOo/60K6jopW5XWCwzIujw8m0Zqg+qDdrZrn/6t2+Sttjpt/9ZF6Bdw2zh1XUoIauCqaW5LWTVRA+y2T98Fq7eNItaHaVwFFT+VVcZS3lbdiPqXnw5Kiha7aHpCrtjUOXXsr8ol+rGVMagIuUOfDk6Br1dvilgGbPu3WSYdgzz/rvyJw9qD35Tm9nCK+tQQtbrUUuv/kjRKy2WuCQ/P909p92F5G871VcKt19BmzFoljRNpbwtW2dEUPVLGUMuofxa9hdNWh0XdGSFbbbuCTq2fN68qz/Oqp5Nju0+/sOfTnVq7TRAK+hs4ZV1KCHrgqmlUX+k6FUMQv/xlPz4lBwu3fXVPXhbHQqqCioHRzdv1b9o/R70rKzgw+/lDwZi5moPOrTCUUHHlpcM96ClaZ1itwXo9KDThVfWoYQc6UHPneVLiuX/8lF0nz8XiaFfE/agXRRB67/d7tuhMWi/1W7HoM2vy+Qomlz59FbQkRVWX2dJX9Cx5ZUP+mPQrB46N+O57Bc/3Qo6W3hlHWrIuiG7Y9BeIev3SdV1lqPbbrPcVp+CVlySux/zYt9WtlLzNmv3Km8FzUb24ptfl5vj3A1/K+jICssd2C9PN4KOLa/E7O/Fy/8WocpifycnhM63+WCu8Mo61JB1wbLOXnzzI7WdMzlqFdNL5Yxot1m61W+b2vCIggGwglYzclWbNCOuas5wUNDJedBmi5Vftp8OCDq8wnbnpC/oyPJ5tcaBedBmuvSh/cnDbQ86W3hlHf+lhKwLNjAPWiUBdaJJzM+XYt80S3cetNMX7HMeVPm7/PK7oum+/dR7+/6vj8nPfhwcg5aHPX75qX8kSfm1ksOaTwcE7axQOTL09kPx6X/c7MWPFLCMKQ/FfKqOJP26qZ3Y5f74UzVTJI8k/TofEHSu8Oo6lJBNwdQWaX9Ul6lqpGpq/zzULEqATl+gRHALlKB2uDg9th4iq1vERZNqEpOgRar8rp60tx46SEFXt4jDJtUkJkHrWTwH4/dABV3dIg6bVJOYBM2//KoYQN1962BsFKig61vEXZNqEpWgJD4oKIGGghJoKCiBhoISaCgogYaCEmgoKIGGghJoKCiBhoISaCgogYaCEmgoKIGGghJoKCiBhoISaCgogYaCEmgoKIGGghJoKCiBhoISaCgogYaCEmgoKIGGghJoLAuaEKLFVoLaDUdihYISaKAEfbEVnYE8BnJbJArKQDCR4AWNmN9uXYBQoaB+oKCGQAmKl74YyGck8BR/PL4cj3ai423FiAPtRdBjid3VkNChoAQaGEGFnC+2BMXLgxEH2lGKp6AhBtqRoBGneE4zGYIjaB6znxTUFCBBEdMXA/mMhJ3ic8TGZyCfkeAFJaQPBSXQOBL0/ak8X3/02dQTKd7CnhJeHow4UIgpPk0O5ZusfqMVrhZ0taF4WzHiQAEK+v7UaJnevy4OF+NsE6eZDHEi6PV0rt9mI0l+MhwFJTVQPWjTxa81FC8PRhwowBRfjEGrLtRkDJqvT/J4WzHiQCEKWiT5ci9+pP+cDRfjMJSYgDoPSkOJBEpQtYtfZSheHow4UIAp/noSI8/McKK+Yo2heFsx4kChCir335UJp8XhosrynGYyxJmglZomE/U1FJS4E/TtUQq6aKK+38UbG4qXByMOFGiKN+lBbwU1NBRvK0YcKEhBxRzoQ17vLilRal6Kwsy/jke95fiK+WVf0NLRu+fxA0m64aLaUSIGwM6DVpgZqv1nx0BIkYYCoQtqZijeVow4UNiCpian23WII8tzmskQqB50GAq6Z6AEHckVyw3Fy4MRBwo7xS8KNyroUkPxtmLEgYIU1OyqzjHiGIYSE6Cu6hyFhu4WzGuSblhoKF4ejDhQgCne9KrOiZouMxRvK0YcKEBBV14XP0jgWZ7TTIZAXdU5CQXdJVBXdU7nigWG4uXBiAMFmOJNw80Jqm0o3laMONCOBJ0h8GEoMSEkQWnoDoESdDZX6BqKlwcjDrSjFD9fU01D8bZixIF2JKgGoSZ5TjMZEpqgoRpKQQ2BElQnV2glebw8GHGgHaV4rZrqGIq3FSMOtCNB9eBk054IUFAauiegBNXNFbOG4uXBiAPtKMVr13TOULytGHGgHQmqT3BJntNMhgQqaHCGUlBDoARdkCumkzxeHow40I5S/JKaThqKtxUjDrQjQRfByaZdEK6gNHQXQAm6MFeMG4qXByMOtKMUv7Smo4bibcWIA+1I0MWEk+Q5zWRI2IKGYygFNQRK0OW5YiTJ4+XBiAPtKMUb1HTYULytGHGgHQlqAieb4iZ4QWlo3EAJapYrBgzFy4MRB4oqxS98FKLu69j77xdbsV+2fgygu5e1NnL+8imom3ABJHlOMxkCleKNwTeUghoCJah2d96nPww1DtSHgXxGGgoUh6B9Q/G2YsSBdiToCjjZFCmxCEpDIwVK0FW5QjUULw9GHGhHKX5dTRVD8bZixIF2JOhKkJM8p5kMiUlQZEMpqCFQgq7NFU2Sx8uDEQfaUYpfXdPaULytGHEgPEGvp+T+9TLyjMPl4WwCnOSJEQaCZnfP6f3r9bTKUEeCkthYLqh4lLF4hnE68qDtFevFS18M5DOSnRQvHgYvBB17EvzCcCp4jc9APiPZEbTuQS+jTzJeFM4BxyPecU9OMxliPAZtHgnveL3LOR4BDaWghhjuxSfJ3bP99drJFYWcL7YExUuoeIHQUrwd3Al6pKB+A+1IUDtApnhiiMlefHVhpv29eDtQ0Jgw7kHXzTI5nWaSKd5OKLyEihcINcVfHtaUhfOg0QRCFdTBRH3EcJrJEHNBHRzqjBgKaoixoNcTfopfPxLFS6h4gdBSfL0Xv+pIpy9B1xqKpwNeIDRBtbgU+f/tceJ4k58Uz9mm4HEjqPTzq+fy1Kf14cyhoaHjRFB5MnM5DZWOjAR8TTOtNBQvoeIFgkrxzWGkySNJot8UZ+Xl45NR3uZB1xmKpwNeIChBNRG9Z7q8B3UCRpbnNJMhbgS9nj58ll1oNraX5HEeFMJQCmqIgaB1mp+cqM/KZUbnSn0e6lxhKF5CxQsEl+Iv969F+n57tH9Gvauamp/chKcDXiA0QcUueiau6oS9JukWnn4XLGZXdb59/Vm+ZpjoZX0fi6ehgWJ2Vef1++cpQTUmo7yfbmdmKF5CxQuEluLlaUyXw2SKzxI5Cbq0B3VaUyND8XTACwQnqJjlLPrIyZ3460noC5Ti842zPKeZDHF20dzl7hlM0E0NpaCGuLuqM00Ot4I6ehRi/zX2mL/jcWEsPgoR4LVQUO0zlcXpdkBjUMHiPtR5iSIIBDcGvejeV+T9aaGg7uFsU2iYpfhs8jCm1fVahoYGhvEY9P1J66K5sUvrNrvseJmheAkVLxBcis+rHtT+HZa9NP4iQ/F0wAuEJmgxslx9b7tNLzveJMtzmskQk2PxqwafS9frgC0MpaCGmKX46nqOcWQ3O3XO6Ka3vtE3FC+h4gVCS/GCOUHTeoCajY1Ut703k7aheDrgBQpQUOXr7a9JGoSzTaHgRFDlavhFV3V6hIYGAlQP6jN96Z1kj5dQ8QIhpvg5mkeAgI5BBVqG4umAFwhPUHnC/PQVSbN3GNs6xQt8pnlOMxli9pyk4t903Vw9gqA+DaWghpgcSSrTt4MnzXlPX7OG4iVUvEBoKV5cMCeI4lmdc4bi6YAXCE3QugcN6br4cTjdBI7JGFTuouM+q3MZNBQb81uAr3uWF0iKz2cMxUuoeIHQUrwdcASdNBRPB7xAOxJ0I3xkeU4zGUJBcy+GUlBDoATdLH2NGoqXUPEC7SjFb9f4Y4bi6YAXaEeCbghnm0Bx8pQPm+v1BQ3FxGiiXpxCN/p4hBXr3TR9DRqKl1DxAqGl+Pen8qpOB4c6t238IUPxdMALhCZofT1HfM+Ld3kne04zGWJ2C3CBg9PttsahoRTUEPOTRWIbg0r6hm5fIvxAaCle65KPJeFaABq/ZyhAieAD4QlqA8gUL+B0ExYUtA8NhcIwxd+/XlbdfRE2xeddQzFKhB0ILsVnd8/p/at4IuIKgAVVDQUpEXQgNEHFNJOYpB+7d/LCcIg4yPKcZjLEbKJeCBrfRH2LfUMpqCHmPWgM18WPUguKUyLcQGgpvhqDuriqE6/xGchnJKsT9SvvUo+d4gkMnudBPT0Kka+YXgsFjerWN9Mcjy+29pbQqmYxEFqKrwV1MM0E1vhHKagdQ8GqZjMQlqCX9pIP+xP1YBxLrMTiNJMh5j2op/Vux5GCAgB1sghY+mKK9xzJzhi0ubKTY9AFgFXNZiA4QS/3r+lD/vYYx+0Xp7CX4YkpJsfiD3kmThaJ75okgofZySJvX3+WL8vrxUtfDOQzkp0UL04WEXvyuxJ0dabHrRpQJEtjUDFDfznsK8WvHoxymskQk2mmy4PYk1+1Ex+aoKsNpaCGcB5UN9A6Q6GrhhLJUoq3QniCrutEsasGEgl+oh4czopugMle/MqbiixbLxQ01Dvmd7dzsF689NUPZNyJ4lcNIJK9edD1BCqosaEBVG37SJbGoG9fWTjfLswULzAzlNNMhpgI+rjTnaQKo06UghpifgtwB+vFS1+DgUwMDaRq20aydE3SnneSKpYbGkzVtowEv5MUDpwS9QV3ksygoZ4wSfHOHuSFl74mAi0zNKiqbRWJx+KtBlrUiYZVtY0iwQsaGEsM5TSTIRR0DfqGUlBDFgp6PR20xqBp8b2cjRq7QU4EKV6g3YmGV7UNIvlL8eIpX9eTmNCPXFBtQwOsmv9Idm8eNnF3u3KqVJ6Xt0jQIOF8k1Oc3N2uPtgkbvEQvaA01ClO7m7XHGy6PMSe4gU6aT7QqvmNZDfFT1FrOX7xZ0yC6hgaatW8RvI4D1o/YuH9Kf4UL5g1lNNMhhhdNHcQ00jrrkyKTNDZTpSCGmJ2d7u3xwdx+wbb68VLX/qBZgwNuWreItk7HzQrMrjGQxQmbtEYnaAzaT7sqnmKZE/QSyHn5DRTu6+/jzGohKfgOcAkxT9cT+JpxxMpPivnoJb2oKFDQ+1jdmeRu+eZK5OEwntL8YJRQ8OvmodIXk+3u9w971DQ0U40gqq5j+T3fNA0OdwKuoNHIR6P25chrtcSQZVLOmf34sX18/sag5YM9qGcBzVk8fmg5/pQ+/w00/vTQkG1/1rm2DbQUJqPpGpuIw0FcinofLgeeI1vFmjA0Fiq5jTSFoLu4HS7ITjfZAuoHjQiOCVqCShB8dKXeaCeoQAlchUo7BQ/Ha4HXuOvCdQxFKJEbgIFKWixAz995WfsKV6gdqKcZjJksaCzp4EI0vp6kGzswpA9CKoaSkENcXIkSbkB3tjz6HaQ4gWNoDAlsh8IKsXroXG8aSeC7iFQgIKa9qCE9HF0Z5H6GOe+x6ANR06LmuLobKZ6Z2r0yrpdpfjCzhdbhoJVzWokbyneNBxe41NQn5HgBY0Ukd9/yxxvBgX1AAU1B0pQvPTFFO8zEnyKx2t8S4GkoHZCoVXNZiR4QQnpQ0E9w7HoMqAExUtf9gOtnbPHq9qOUjxe47sItM5QvKrtSNCI6ZxuxwOf+lBQP3TPB+WxeW2gBMVLX84CGSuKV7UdpXi8xncYyFBRvKrtSNCdwTyvAQXdEio6C5SgeOnLdaDleR6vajtK8XiN7z7QUkXxqrYjQSNm4rJjzjlNQUH9MHldPA0dB0pQvPTlK5C+onhV21GKx2t8b4G08zxe1XYk6K7hUHQQCooDFR0ASlC89OU5kIaieFXbUYrHa3zvgWYNxavajgSNGP3bLzLPd6Cgflhwf1AORVWgBMVLX9sEmlIUr2pRpXhPj0J8sRXrZaPH/x3dP1LRWhs5f/kU1FW4+GCeL4FK8USFigqgBNXuzueII9DgUBSvalGNQafD4TX+xoEGFMWr2o4EjRjTx9Dsfs6JgvrB/DlJOzcUSlC89AURqKMoRIkcRYJP8XiNjxFIzfMYJXITCV5QMsZ+0zwFJdBACYqXvtACId5LfEcpHk0HuECQT2PYkaARYz7NpHI87m5elIL6wYqgRwpqYcEV4cASKl4gpvhxKChAIAo6DlM8AkqG30mup6ChspPxKJSgYAkVPtAqR5nil4fD1gEykLmjFNRnOHjszIMOEkuuH64FBfWDQ0HzOBwdqQOUoPAJFTjQYkfRUvzIFBoFjSfQMkfBBD2GIChZS8C5PoQUTywQ6gH7EAQNKqECB9JyFCLFq8UcPteVgkYaaNbR7QW9+TvyOA96SZKH96ckSc5WwoWP22mmYZBzvfZAxI2g6f1r4ehDnl9PBwvhImALQXNUR5cMk50I+v5UaJndPeelqtrhwk2owIHGZNgoxU/J6S3FX09FZs8+fM7rfzXDRaADZKBBJzYQ9DjTdXoT1LQHJc7YPtcbTn85HoNKVVeHIzbY0NEVc7NQe/FxJFTgQKok3lK8vp3wp9thbMVdBLJ4BwiN0wNWPCgXStCI2WiaaQwf6X5ul0gPl4JmSSJ3lCyFC5q9CWpFToG7Mejh7Zev5YSTdji0PBhtIKFOe27bUcFGkYxj+UvxF7EXz4l63ECjgpq42imSTdMF7ibq374Sgi6aqCe+GLPIQFVlCWt5XcGRoGL28/1/c07Uo6Ip3ryr6ucuxrWOJurrfrN/sggfhQjzWtJGx+PAq/edu7I6EDRPy933jBP1cQW66Uy7u1sOisR5UD+ATTPZw8GwswMF9QMFNcS1oClPt4s8kOPb5kP1oHCNz0BeI8ELSkgfCkqgcSSoPBe0YGQEyhQfUaAQU3yaVPPzWbLkjHq8xmcgn5G8Capc6MFDnSXRTjO5xt3JIiU8WaSEghoC1YPipS8G8hnJ5xi06kLHx6BDvAx+agADeQzkuEhOBC2SfBl9pP+0sg4GwggEUiQfg0aMmjLQVpEoKAM5CARSJArKQK4jUVAGchAIpEgUlIFcR6KgDOQgEEiRKCgDuY5EQRnIQSCQIu3t4DkJDApKoKGgBBoKSqChoAQaCkqgoaAEGgpKoKGgBBoKSqChoAQaCkqgoaAEGh+CphNP/lqCvDPUyPXOS3n7euz2UvpkluqV2ymO1Qaytc0El2UXAXfxIKi42W1mobbvT0WQVDxseT3X0+j9z7QRdbJRL0vFsdpAtraZIFt4lXoX94LKJ4K8P61vtrdHcduIsXs7LyKbuEGfLuV9Vi42dLBRnNxmA1nbZjIWuKASS5XNcyt/11lyGLu5lD72dLBSnDaardRsaZul938XgKCpvQGNnU1pQdDJR+55L06DpQaytc2KZkIfg8oUZmnfZvyuUEvjrN6MZU9lqb+yJ6i1BrKzzcRACF9QUc41hWzJ7OwjxSuotQaytM3EbRBDENTShrTVPUSb4u01UG5lm8lGwhU0baflyl2KlYHS1c3flAhpJ8lKcSTrG0hl3TaTpNXNFs0Due9By2ra2ALpinr2WV8ei9NMtgS11kD2tpkAtwctEeVTbs5szNujzfQFNVFvxwWLDWRrmzXBjPExBr2s6uMbqnSBs1di8XCgFUFtNpClbVbGQheUEGMoKIGGghJoKCiBhoISaCgogYaCEmgoKIGGghJoKCiBhoISaCgogYaCEmgoKIGGghJoKCiBhoISaCgogYaCEmgoKIGGghJoKCiBhoISaCgogYaCEmgoKIGGghJoKGiP66m6Y6Dp3ZIyvVsapUlySIfuYtz8/v3pLO5zfC7fFyUStzi6fm/rXuqBQEEHKO9Na8b1pCWoeI6GfJbG+O/Th/z615+L/9X3pb2I24Jldm5VHQwUdAAvgp6HF20+lEuUglZ3kpX35Bb96p6goAPUglb3Y357/E2R9w9vjyLfvn31h8cqM1dfX7//ezEeKG9YKBa6/z8hWSFY9Y1yo2n5cILiP8Ri5ThCvjs30eTvZR8p78hYpvi06jX/X4w60n11oRR0gEpQ8RwWcVPYt0f5BDehmhRKDA3P7dfXk1BG3GpZfNJ0jUJQ+U29nET88np6aBaTnaP4sI1W9ZDtvZu7Dyyy9hykMKCgA5SClkPETDh5qG5fXOhUqlZ0Y83X8o3ceRG2dQU9KGFE5PKuxYVj9WL1nWuVaGflg/7b3Mqd40OCgg5QPcBDdlXSyXPlRf0f4rvm66bPk/m4K+hZCZM3/1f9qHyVht5EUwaoXUEHd63ihYIOUAlaP6GiK2gtb/N1qVIxhPzw7zc96FkJIyNLQauv5NdyAumc96J1OspuiqegRO1B89bNnqD111KpZpmRHjRXQqk9qOTSj5Z3ZwPq/SI59KWgpB6DVor0UryckhRjUGU+qN7nrgU9tOm6M5l0MwatI3Sj5V0P1WkmjkGJuhcvereeoOLpM/VevPi66UGvp6ScfRcmFam7Tv7VcjJ0fy9e9pzinzZaJab6BCY5US8fB8+9eNKdB/3wud+D/s1jNaCsvm7GoHfPQsNLInrXJPlN0y2m6oHTrJo8rXvQrH5wTL3URZ0HrZEHYMvPOQ9KpvCWYUcOSWkeqYoGCroQf0PAdPApizwWTybxJ+jgUXeezUQIEhSUQENBCTQUlEBDQQk0FJRAQ0EJNBSUQENBCTQUlEBDQQk0FJRAQ0EJNBSUQENBCTQUlEBDQQk0FJRAQ0EJNBSUQENBCTR/Bsn+p1AiBBefAAAAAElFTkSuQmCC" alt="Estimated p-value as a function of temperature offset." />
+<div class="figcaption">Estimated p-value as a function of temperature
+offset.</div>
+</div>
+<p><em>Interpretation</em>: At warmer temperatures, Chinook must feed at
+a higher proportion of maximum ration to achieve the same growth target,
+because respiration costs increase faster than maximum consumption near
+the thermal optimum. Above ~+3 °C, the required <em>p</em> approaches or
+exceeds 1, indicating that growth to 40 g may become impossible at those
+temperatures.</p>
+<hr />
+</div>
+<div id="built-in-sensitivity-plot" class="section level2">
+<h2>3. Built-in sensitivity plot</h2>
+<p><code>plot(bio, type = &quot;sensitivity&quot;)</code> runs the same analysis
+internally and produces a formatted figure directly.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">plot</span>(bio_base,</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>     <span class="at">type      =</span> <span class="st">&quot;sensitivity&quot;</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>     <span class="at">temp_offsets =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>     <span class="at">fit_to    =</span> <span class="st">&quot;Weight&quot;</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>     <span class="at">fit_value =</span> <span class="dv">40</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>     <span class="at">colors    =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; === GROWTH SENSITIVITY ANALYSIS ===</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; Mode: SEQUENTIAL</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; Temperature range: 8 - 18 °C ( 6 values)</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; P-value range: 0.3 - 1 ( 8 values)</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; Total combinations: 48 </span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; Processing temperature: 8 °C</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; Processing temperature: 10 °C</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; Processing temperature: 12 °C</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; Processing temperature: 14 °C</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; Processing temperature: 16 °C</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; Processing temperature: 18 °C</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; === ANALYSIS COMPLETE ===</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; Successful simulations: 48 / 48 ( 100 %)</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; Maximum growth rate: 1.768 %/d</span></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; Optimal conditions: 14 °C, 100 % feeding (p = 1.00 )</span></span></code></pre></div>
+<div class="float">
+<img role="img" aria-label="Built-in temperature sensitivity plot. Each point shows the p required to achieve the target weight at a given temperature offset." src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAHgCAMAAABNUi8GAAABUFBMVEUAAAAAADoAAGYAAIsAOjoAOmYAOpAAZmYAZpAAZrY6AAA6ADo6AGY6OgA6Ojo6OmY6OpA6ZmY6ZpA6ZrY6kLY6kNtGcGVGgrRmAABmADpmAGZmOgBmOjpmZgBmkJBmkLZmkNtmtrZmtttmtv+JgrSQOgCQOjqQZgCQZjqQkGaQkLaQtpCQttuQtv+Q27aQ29uQ2/+2ZgC2Zjq2ZpC2kDq2kGa2kJC2ttu225C227a229u22/+2/7a2/9u2///TtXfT05bT09PbkDrbkGbbkJDbtmbbtpDb25Db27bb29vb2//b/7bb///iAADiAEjptdP3ADD3AFX3VVX3VZb/AAD/ADr/AEj/AGb/MDD/NID/OgD/Ojr/Omb/OpD/ZgD/Zjr/Zmb/Zrb/kDr/kGb/kJD/kLb/kNv/tmb/trb/tv//25D/27b/2////7b//9v///8E1kbqAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAgAElEQVR4nO2d/Z8jx1GHdbe+DbuO82YWrXMhJLfZxCEJrEJ4SQwXVomDgYXwomAw2CEGrHjP0vz/vzH9NtMz093TL9U9NaP6fk4nrTTqmpdHXd3VNd2rikRCrNXUO0AiuUSAklCLACWhFgFKQi0ClIRaBCgJtQhQEmoRoCTUIkBJqEWAklCLACWhFgFKQi0ClIRaBCgJtQhQEmoRoCTUIkBJqEWAklCLACWhFgFKQi0ClIRaBCgJtfADulk1uoAq8/gnL303ffW11erJmw/tG1u1N09HytjUWxxvV+cP7s2a8tiWxx9erlZviv/T973VL+qjWL325t/5bs+NbFdP7sJNAeskAX31fAyuRo+XfctZAd2z5yvxf/K+N6r3QujJjd8XhBEC1EsZAN2MwtWovkg/qN7Vr1QQoF4WNEAFEy4yAvZdqeFzfJ87RghQb9WnWMJ5/KH0uIfr1cUv3lg9eVH97HL1jJ3I+qz+uPZkz97pbMdO8/eer56+U/3ieX2FvngnkX/6UlyFupwrbaP2e0L8Ij1edgDV/tA277ysd+n7bQ1af+WP60/5XvLtnt21nG01aviePXmD/3/X2Zd36zdfe9Hse/Wz+u8nX3mnPUXMib/2B/KAW2tMdYX85EX9ybuXq86xtt/Z8Hq+LvumEpU4NzIoaArNDNAaJ6ZnL9Wr1eoNVTOoqpbx024na6jzh33zqRFQsZH2PaHaxT/78XPdT+uAaptrL5saqwW03TPxYQ3hKKD6vshju1L7vu1XiNumEu5YkydPvnz8wouH9li17+zZFszeFf+d/37HSHiVDamZAbphv/wamit5Ot+tz98Ldqb5mWUfvstbAu127MPzd6q/rYv4nQf51kYC3QGUbaR/T4pfpWdaVdW45JuOGe1l/VO4eGDVnwZoXYLYS/HhZqUBqhWou/huib/78OqafYfvNXMfD+xQ1X7Wmwk74lgaa0xsY/1kqmPVvlO/vOHN7QtxqpWLZxturc3hIpoXoIImXunUL+vTK/5XiLBLzE+uth07wapr8N6fvqHwHQJ60y1ffuXV250KteoA2t2d5ptNwRqgNxyii0r/sFdeD9Bhiduv/ER+n9XrP9FPkGwxbNoDFtaYOr+3qjlW/Tv8/G55ZclZbQC9ac7JVJoXoLJPLR3ghaod9HqRX11tu8YlH98Wb1kA5Rvp36s0g1fHP/tz5eQ1QLXNtZdqZztt0Du5r6pbvxkFtFti08bgXxTtBNHklOfnXDY/73Rr6hgYYfvWs/Oj633n/GGz+tz1kzv9B9EraBLNC1DVgHcBWm9zo22nXY/Vsz9877oPqGoH8I3070m7oi349bYW0tqg2uaDPbMAqn+oytPaeBqgWoltH1F98dVz8dEPxJuqVHbsA67kqz6gne/UjdA/ul69uF1d8f4SARoorQZV7nqsBm0ifm3leKW2twKqf69qvsTrsoZKDVBtc+2lXkl61aBmQA0lVtoXX333DcGbvoGxBpWdJGcNWm/95UtWfX7uuj2VBKi3tDaoOlkmQPU2aHNS28rxpovyVl23FtD+xdC8Y7884+4IGdqg7ZU2tEHNgA5L3H/x+5046PE7zetuG7THlQozHd97rgHa+Q6PDohIh+yfEaAh0nrxT15Ur65FQGgIqNaLV9tpleP5w6tb/qnCoP4We6cFVP+etCvjkawbLfZFDzNpm2svtY76EFBHL76BS/Xi9RLffGCNlJvG/de786oNf3V78T2utEA9G0BVB6B/R/4GWWtGRKra3SBAPdSPgzYVTA9QdZ217fQ2qOok7VeyvyqkAap9j0tt89plE2wxxEG1yOsTMWSg9mQIqCEOagHUUGKz7z/sNJXbUlq6dK7aoc4X+gFo3+EHesM3VO1VHqgnQP3U9hJevV2fSTaCYmyD/tXb4kNtu04v/tn3uUPlgznvVI91T+MrP9Z78fr3NHuvvXh49dzQSepsrr08/uiy/o6xDSpGkr70jqkX3wO0sy98JOkb8uv1vrO/V1/sjyR9o93BLlfvfe2y6fW3B9B+RzVUZQhKGCFAYRUxSj2dNqNJJCQuArSwNrwd2IbRSW4RoIWlwpsIEoVmIQK0tF6x5mAnEYnk0IIAJS1RBCgJtQhQEmoRoCTUIkBJqEWAklCLACWhFgFKQi0ClIRaBCgJtQhQEmoRoCTUIkBJqEWAklCLACWhFgFKQi1QQFckIO2m3oECmgJQ05v3kBbsWpaZXRkz9qPJ71kJ0DmbIUADN5ugMNKUIkBJqHVCgC7L956KGQIUWssyQ23QwM0mKOykVQhQuwhQkksEaOBm7jKU7muXsfDHfRE7Z7uziY9zUYC6C1tW47CEmbOzGtCzswKWqA1KitCZ0KT7QICSbDo7K0Wow8YJAbog35vZzFmQoMyZPyRAoTVTMxb6dmGwRjEcAqirNDmXvnGl7+Mtn1FcrFTRPJss2EQufgKNAHXm00kCIdhO6MpgzLInh2sG4d40I29N5A37n60fctU8myxYRYAWUgAeXoAmmPQG1O87AtDj7XBFz+3q2XO2ONXrbD2q8wf1rFkYF7n4nGaCmNC/tyvSQ3LszapyAq5vqgDlPl7McC5r05+/5O9yJh8//1I9txY8RIAGyQeuSCg7KjGS5Nw5GBcvsN1yMF+/U88mC1aRiw+QHTUQKgtL7aJxT4M7SeZFIQjQoupSN0cou2p2drjjAZdS1KBSHRcvASUXX8iMjUh4KtfrNWyBFrUnrX8UsYD2xAHlTLJOknwOskCA+qpcVVnTuauKINo5aZ2DggSUwkx5VdyJr3knqUwd2pF2dJCAUqA+l/pYFuOT9+InILRllIY6oQVqxlJhFgB0LaQAXSv1PoeB11iOOEYCFFpAZkZ8eY7uUIe4EUBHgQ0AuN7o3tzUPS1AZ6JSrcwx4irl270qyWCAPc0QoIhUtgPkUcWt1+o/cHPa381bxi+eEKB4XXwMmaFmfIA0fivQTvjuMAv31j0jQKEVZCa60hwnx8OFe6jAWHwDqHHXTghQXEpy5x6+NxLIvkoki8g2qHlng+KgtoRl9slF1Yt/Blo4GUAhWpqGbgUQkH0VAVT+3Iy7v+pvaz9CazYTGzlSj3YEyWLBphNw8WCdIK+4D4zKTNygdnsUUOchWhOW909f8uylbqKy2YJVSwHUErQE7Z4bI+dZtNuVIXTkvvjmWHmnam2JWVkTlnl6Xf1pN4upY2Fcy3DxliEfKDS9AjOQ2k0+9w27lOseoJYfp9XFixr08qabB6pb8NwRME0PKHxMU78qARH0JO2qqWZnaugLcvGWhOXDdd1D2qzKAbqpfxGPl7bkaVthkyRqwpXdbXDaBgdhtavNFAF0cG2aow3uJEl1EpYZui9ui7l4zif7HVjzqxAAmlyWu5GZu/HJtVP/SljqSx47ULodB7ObqKwEDigPFGxYWEu0fpMKAxN4xVmmF+SScPAl+knmpi4/eghAWW3GOveFwkxsP2Qsgbd+kwoDUUbHXl6Sx50AcyefW077zyA2LdU0EKDc3w8SlZUyuPi69tyG16BZXHwPygRAA2tM8KNpwdSfm/925s+HwEaA62rqznGo83D99CWvQs23QNsKA7+kxhozuv4sDWgPqKEn7wJqL8YTXFcZCwNUddH48Gp6YTGa3ptHO1gbUMPtNMWY8a5pd9r/A80T0KKF9QUEZ1onKDyCPgZkZjlqWvXC+L0TAhTAxfuw6WsmEdD7Mc58a0q3ssfmxH4xMwRoWpm+FafLDFjYyNFqgwGzNZRdAlBbQ+KEAI0XiFMHjWtqY5CwQJoM5VXr6b0AhW+iZIiDtkt954+DhsJpJRAy6K7FfTKBqVvKq5G+WACgaBKWj7cWLt2FBbv4iIqzN0ieZSSoiaCX8r8F5L0MDTtq2z6NJCwXG0kSBsMLi7xZKORbLMHoXqYZ5Rqq3I11K2Ct5TfB1F6bfg3ZvZS7cUANCcv8g+1FVS5heW+eKT+usL4SWpx6oiY0nO2Vay/Q1MmaGWQEtBuSahsD3W2tCcuqBl1AwnJid6ibrwmkQSNz0YD2xS5lf/jV0u52zLC84U1T5AnLIy4+uas+SCiG0aBXkDjEE6bJbuRSx7bqvuc6bEfCssh/my+gcHGktg2aqhH6CmW37sqM5wIBaklY3kswi7l4Fi1wBJmCCktjs9/QhJgsZuIxyVbsjOzUi6kEkW6nAC2UsFxtVSxr3wtqhS7H3cIZs1S01k3X3u//HfxgYE68BLZ8nNUPvi9TLskNAahw8ecPhcJMWhwhJB90kBWX6tQt3fRY3xtYY5Zw8WydJPkis7zjoC7ZE5ZZ65ShUiZQr+2Hf0a9TiNQOpJFweTEufQigJ5JQHsnDP7EgQAaKRw16Flf3uY6yhB5n76tydX/8VZaxdk7axqo+X7nSjMEtG6Dyiq03wa1FwYGJxygSMCUGniXSgfU+h0IbN3XZY6ANukilvrTBWiAlb484RzFDqaXHu/iDShaNlRmvM6aCfHKpzngNjNLQMMLy9rq7Gg0kxio5owG1AKSecvkOKgHtgQoUySf4S7dmmM0nUtP+XVC7bO5OdB71/TFeQO6jerFeyqqzallEjdvgQfePYnzryvtyvujWjygIYUFX6CoDtHwXowMNadyioMDsnRbElSg1g9x8TkaalgALZL3sONmOqnuGTQEFKCuNAsVoCOHZ82ol3ep3yxgCvDEMJIkszMVRwbxGBB0XTmZ9HDr8NMuoPrTQI50u6rkUCdsskgrgDhnoXsxznLUlZPpTNPw05XYpLul+mJ3U2tGPdNeTYk4ZbKIu7AxF58ahJdVJjeTr/Lks+NWljYovCbLB1Vil9LS6bcBOsioryS2hdLtIpNFjCcB9FbLJQKK6qa5BBfPszYKJSxHJYsYBDV0qU/ikiHV3eD+znrPGTVF7LZzrMGdJCOfolIrBGhkDTogEar2zByBNwFargE6EaDtkQUBasmoV1SWyqiPSBbJMau7BUywVpubv0KNw2lcvAYhSD6o7BmVyqiPSBZRN6xnaHP2BUXOSAW5aECrtp6EAVTMGI94pTnIpa+yunRsoaPJZsgHBlRQCRGol1H/kZkZPAtrBDKTQu672RDGNjPM3BMoXGPxte+Wk9rUrI9NwBRiky/5XKVVCJ5gRvhePczn+50yLr4UoDO55ePwVZ3J7l+JNlNuWM99s1BUnVkE0PV6V4bQmQCa0WbCDeuZXDoyZ25UMUDtOhVAY7xVxmwPfK1Nk9Yc0GnbodgArVuhlthmss1Qp5hxVncAOPO6+CbiUQjQObn47coQCoCw6X1J893NBlhnlgS09x5oNFkoAFDwX0uEi09mNOlnl9DmHHPdKJ26FbzeW6btoKC1f7N/KR1G7FOAs+kX2agnXMLy1pXtGVqYr9LbnMMsjhm0Nm2Q+YAHBKjjq0NAR5bjNmUzsTj9ni1PCDOStJfp+daRzJDCWo05RYDeuulejEyAxrn4YKAizERA6w+oq0RrwrJKYAJJWFbzPNlz6QIK68h6rgFvt6wUoNnrzLjaKhieiFNTl/t7/7Db/du3OjYe3zdsKt907cvKttvDI7AmLCsmIbKZDte2BWJDZLRpO9eQ9wM3z7kB9aALxP1GnZr97tP6v199pv5+fP9b5n3xBHRtOBTDUVld/Pb8R7zFiHuG5eGdQhnuB5bOPH+LEzOgxw8+ZU8ff6jeMAPKatp//NbYDnYupXtTa8Iyv0eodsgggKpUuoQukgXQ/pw00CNEWmszO6CWy5QGo0kxp0jWi4+/+uz4n/+z2/3msNv96rP6zeMH/1v/9Vg/WCW72/1HF1DzXsdmM+kufivmBr0BSVjenD+wFW0uYbOZOjMqZBohknCWuFlocEFBakuTYk7VXlSdh92nxw/er58+YcRyQD+s//qQkVt/xtoAHOU8gHZ2SAIKkbDMogCsCNvNHEGF6WrnpMlQczYve8+5ZHKXwGQmSAe0dvYf/6YB9NPmwT7vA2rcewhAeb8JKMzEjDDQBxVxkIY2M06loANaIuqZrbaEknTxNYAcxf2HBkBrR7+TgLoFkrDMAvSszQgQqGdRrMNbd9CAFlzdMnseXFE4Y46m7SRZa9Dayzc1qNsMurF4NmHd5graxcOvbmmtKPMAqgNZktC0MJNodXIcu4DuazI/MgA6PCR0gLL7m+qefFInfmATePHAwuOXU7rzuPNV99t3jL3jB/+9231SP9WQdgCt39n93wefDlz88CDxAZrDZg5AIQoa1eRNzbTzJZ19iPrHehKAQk354YUlqIu3wzmL2469AdWOpnfAqABVQfosgXqAS1oe0MnNlAe0hygqQJnEbCG2SR5hbfqpcLYc3vBRMenHjw1QFktlAg/Ux6lkdwh9fLOg2hMQFAe1JSw/Xop5aADioCrYmpBrZ7MZ4xQj4Iz2vWFk4m9JqCF51VP/iI3B8wj9bzzMqDNh6E7YDNoTlvei1oMYSVLpphv4GjToXMfXmfjJCVF8G/SwE2R+JAF9/KT69WcVC4AePxgQajgaI6DOfq59huWNqPVAEpb3vIreRrVBQ5fjtj/qerPEctOq0px+6W3bI3pp8I93//I+e97/+z+L9376r9Wvf/nXu0/r14//9EvvcjgXO6v0y29NWD5++w3u4WGmX+QtiaT6s0TLOlGzaW9G16C/Fb79+F+ai/+EV6BhYpfSzqcBUIOL52798UsPuBOWPZwiSHfIy/emk4nexQtAP/6kM1q0/9C8re9Y/IiLt86wzD+9SQb0cJ02wum26b6kYP11aoNKMTIPH1aggHp0kpSlVY9WmIRl9iMAgDSiOgYLJo3dowthYxZiZH70aQ/QKBfvKXvCMkPq8NYd0AzLAJCGAAoc47QgOIf2pkEpQ8OP7/OkkVrtcNKBvz7s/Ifo4RKWQRfySnT2AS4eOgg/RDAPmyVcfFr2Qj8OyvWxTMLrydvFu2RPWFb3suNdCrHYiJABxDwV50wB5XfL+QTqlbANdWr5Igm3zQ0B7T9nglXBOEd3PhD8mk8RwgaoShZZ3QwbCwk2dUBz1qaziW+OaCzkWE7YANWSRRLyRYyA3lcaoLElu1UQzRwu3hEQz8zqnFx8kywCOTeTBDP3/cAFq05AQK0IdnDMiup8AFVD/awGnQ2gisl5Ofdx3GwQlqlVhbAB2rZBlbMHsZlxRoUZIckUxtYYePlRRQeo6Meze48hJ7DNNCeNCU6cQ52xIHmbSWsBzMfFZ7KZA1BL1YkJ0PT6LaI6jEDV8XnvUro6uI4pwGWOSGqgPl+ySI7Q0qR+fcwxQ/ndNH/th6pzD7uX0nkR7Rn1DM36bYChzumSRWYl8yWFw1IrM7kEWY6D1XFAm+qFwcmfTKTaM+rrTveX6xoUJKM+X7IIjO8d7RCVHoMErC5NluCKUiVaZdycXcqzHqAWf2jNqGfZyn9TwwmTUS9t4bhpriefHnsBQIOucKKpDGW2hXsC2irSxR+/fcdqT+QZ9YnCE07Kj2VRhQDq0UkyNUG3VxUUoJmSRVKFhs5lsSkUAqhL1oz6xy89cC5BXHyeZBGmFN8bAGc2F69xWY7Pgi1q8wFB5INuZY0HkVGfKVmEKfxcR1WambM49L8zWBpYLmBDBs3MRwSSsFwJzw41BTgTcLJIhLB4dXP9Usq/F21FmBCFBBRqCnAm4GSRQCGBE0Fjs6xlw6GiG+rMkyzC5Ot7E+mEcfGjPSH8tx2HqDmawQGjAzRPsghTCKDRliHI8ao4FwrogFB8gHpoq4JQtlbAbIc6ETj1ydU9+jkCymYWO1yzBgAgoJO3ORcX3oxW5xSgAvTwVZ237l+tRD+KLycfBKjDKUJ2iiJ8bwybmLL6wM1oJ6J/KeFrkZAatG5/yp7R8daaMKKiCRt7Rz8EUOgee3QmcVYzsSreBpVmm/MxBBSa0OBe/NhAZ5NPtbkIAtR0YJPGk+bg06fateas9C6l62LZE5ZZ/POiKjaziMLSvt6XqTDjkU0F52wanBNGYMW56V5KdrmsV8yezbS54NUa4NxMbm3lr+R4Gwdo1kpz1PfCsLlsF89N8zPEL6W2CCT/o/1b/4I1YZmPIm3PH4ASlgFkKKyBMrdXd5EDWG8uH1BxutilVFdLu4L630qOhGXBLWDCcqKGha07grTlqdk4dUySgDZSgJq3dtyTVDc+WdAHccLypHQSm9HqADpyDd1TgO+fvkQMaDk6d4OsozxsLjoOqikI0PxTgHMzdW28cSQre6zoORmgOox5nfoptEGZINLtxBTg1yAJy6wJUdfEznR6a+fdarOYg1dALsapT77/EIBCTgHOOltbxyCm3GgkE2+qZJFdRxPtBKgmPwiQhGUWoAeaApwZYYC60+n3I3fUZbwv3qmCcJKLh1JcDTr1Wp0RKlt5EqBQimqDblNuOp7Axe+W59yRCB2gopMetZZssE0gaVgSoNDCB6iHWFvXEWQq6eIHdWYpPCcPUBYygw3Qw1ui7nR1kraqJ7bvdcngluP2ezR0TrBU9j3y5bihHlgBdYSZtHQV29wOBVz8aTQ3z3bZlz4bES5AN+0YkT1Qr4W7bPVs7qM6DTrZZIc76LVMQ4UL0LYGdSi2BgVqTo3BOXmrDU5nPMxUAtD5tEF91MSg+m1Qd2EAl9QnjrQcQBmZu6oIoTMCVKWCuEaS1DbWYH6WozoRvy6lTWI8qY9HByi7V/OierzEFag/ATh702r3AC22XHRfq/zy3BHxxJJN9ir5Of6oTG9GO8UwOmfq4k0EnnEzZ7aPARV8NHG1hdFMeLIIS9sbpJUaBTVxg13hVedMAPUhztGLBwY24mhiEAUAlHXRWU/eD9CRwlK1ZMfuR5g1DjqZy28FdWUC26CsUtxc5XDxYVoanJFE+R7/JMDCXJ/QMNPmwjEjQ4rNADeSQidSF48b0MiTFnqNAFy8l7Imi6RWnWUAHUUBqEqLPQ2B5lM6sAFbQwL684hkkVCbQ83EsYvoz1n3LXOYaKJGYjHz6VcrCNCtrBZd98XlShaZCZxMZ9r/6q3pey0uuXcvZbeTL1kIoGxWCHazxz5HsojLjfiMYXqq0BhkISChjsa1u/Wb9yk5KYkx6gBA+d2aNX9bZ0Y9eLIIbNW5LEBz+RN997XxgDh5X7xUQPk9y8fbL6zcdxVHJosYNSO/XsnL2l7LAu68AKAQR5NyCYMAZeRtHO5dCCpZZFZ09uqcqgifJe7qVB2+pMNJuIzhgCbF6O02u/V7NjhzufhuFz2t1eavYoCmB8Q8Lma6i+eAxi/g5bKp73/OqhNJHBRIJbwLa4MCtKY9LihiQFsi5+LXkceNAHUGVIdG+nlUgM6FzuqUAJX+YCpCgwBts0iTBuMHNgvCiXQsfg5mAH6M7utbaiw+vLCCVWfKJS0xeh2myedmCpXzIhOgCcLp0hGfMIuCrzIKQGcwaRI+OJkwnzGbAi/0qQEa4q0SoCQXb5f1SuN18RW+Wb0SXToB6pIFUdSAYhNOl45CML15399WIKCj2fKANouLoPQSyFnyRjR04oa0u5EcNieOHAL30pcYB22Ui1CQ++LHUpkCCusKA6D5zQBrqjYoFKIjZpjCJ25I14QufmE+fLIwUzk3HzpxQ/pI/ISAanez4Qy8h2rCOCjEmfMhNLANmjhtmMNmoRk1sc5mFKeZhpladRBNT7fLlSzCVOhmoftq4hk1QTV7QDuEnnwctHtLBgmHRvw8/Cof3oWV1eCeIRISuQkFX+XDv7CucjtFSWfaHbTeWnQctCO4zpKZU/BVPnwL66tIJ6nY3Wyn0wYF6Wc68tXBV/nwLyy/ht30uceVesKQbgdzSoEAhVERQJcR6BwRBkDhgvZGQkNHkkamFQkprKsss7rnN2PR6bj4CoZQIEBVLDRtuWOMY/HzNIMDUAg3DwWo0OEaZ5hp8S4drcCq0MH74YCySjRDDZqqk2hzLlhAgKbQ2cSosiwNreKcOcoOfxRajvt+6uOEfHA8TZ8FAJro27uFdeW5I6lalhksbdCMZkJd/ONlej8ezMWfvEtHEWbKq4hO0na1Ssu5AwGU2pwVQkDhLweaXnyoG4mEk1x8hPyPJqnCgHDxmznngy7PDDpAkwgFADR5kbkQm0OdvEufgaAv0WzG4qnNORMBX6OIXnxqnD7OxQPBuSwXj9NM7IWCaIOKpWW2ad14aoNCCV8blGs6QNUqXYWW4yaXPiJ0YSZ4xU3cUOCeJGpzjmu9W0+9C9mFpQYdkJgJzkW5+FKAzmioM1MbdHE3CxUxs65dfBFCZwRopl68XDyQXHqQ1vKBVhAXE0UctOD6wAvSWvsfpyAuZ1wbFNgm1FpmHlqKi1+v19yMeM6s6KMJu6YgQ51Zpl9c3qRJ2cxIHtcCzN0aN6BhiIJ0kvIkLJdbwLqQwKhpgew8Sws79aoIp1FKdYzBySJZspm0iTsXoXU0oQo0K5iticoEKEJQSwIKI684aCYVClDe+3LiDeTge0w78dR5u1suiOYUZoLQ4sfi16z3YvkoEkizrEOdsC5/PoBuLkQgNO22JKzL0IBJC1DCAhm+JwhdfphCAD1cnz/wScAfX8d3XzwiaY3C0kAOdgVx29RPQdMvshF4BmjiWgqLdvECCfY/pvhPGqgzcfEiSs+XUZjhBLaFzKxVBL3IGE9wul1cTQ5z0ka7wamAiig9B3SGU4DnVjdA2XuVS9H5oFM0OeIiokGANuOcGWrQucocQe+9yqV0QEuCGkVoUBu0aXluXG3QTd3L54vO2oZFl+TiB1XRWhewsYGSM+r9QAU7DjeiyWGmZhWvvSvfjiUzb1ggyrqw5yIAddM3t3uSnD8m/2GHUTkJTY+D7kUA1JmvzLtSgmBb3v0SXPz8A4xGGQ8LNCAR6uVjZhZx3u/Bu1KiE2XrSs0Z0IWCqWRy+dPmRYMPdcbWoNhdfFjEHfvRjEkH1TFwC6tCY/FNG9Sa3TxHQANrzrm1QW0SPb37MoBtNbUAAArUSURBVFVoqWSRuF48UuF26SXui193nooLTTYTNk08iO6nAoAOw7sw8u0soQEUmYtPBHMpLl6AeV/BpxYY4k2lXDx3766se8yAAtWYiwGUn437KsOow5BQmPlBR2/r3KpN9rZtp3Tx1tM8C5deXhnHxfxGPkNr0O3YUsda3x1hoN7qqQjM8vIiNG4RBQej2p3JQYH6qW4WygMmkgYLdjNdQuHaoFtHCzO2Bi19s1Bel76YNihXvqPJAeieRziPt7YBz2akHmEbtB21W4ZLp/lB+5uxG+MFmfacZXXzvHXIfjJAcU9xEKHSgE5w7kJ78YkT29ltFnCKGG8WSlNpF5/3133a98WXvVlooYDmrUJxB+pza91LICNhEussmYNOQfckNQtqu+Zmsgbq8y7HbX2s1/L1unlvXdI+PTwePCR6f392ZvrcF1A/YQszaZmNBW8WynU0izXDCL03TXAI7uLRBOrNFC7nkjLNPg7aSM1fPCA0T0a90KRDnYsKJ9k0URw0w6k9U3Nw9j8Iuy/eZ37QqQP1pwCm0mSAgp/js95zowy9+LhAPZQbGTl55OIjNDiaPFVomTZobGHLImfhgGaQbamsiKHODFOAA+gk2pyLVnIclGlz/rC9aKcYccs2gxMBSvJW6Fj8VbWv25YZVjuOdSM47wcmM1BmwtdJevz8S/6IFwEKpWnboNA+CwBQFuQ8vHWXA9BQkUuvps4HLXIJAtugrFm5uXK7+DLJIgRoNTWgRULOoWGmzQXrybs68ZF3dXo7xVncsH4SLr6IGTRDnb4nYR4zKhCgUGbQJIuMilz6SSp44oax+UFzJYtQm/M0FQToRuSBbJ1TN0Qmi1jdCCyYy3LxKMyAXaBkF99MTe8eSYpLFrEdJXDNieKSgglFGxTsCqUCqq0v51zlw6uwvorca7k44bgvPmvjC8s6SQNAqc3pIRyAZlXwSnNc4CvNDedBn/ecNKfk4vOaQQdo5pqTAI0QAbpu/yfXTtKFAtCCc9KQcilTxQI/cUOEzeVNmnSCZtJdX5mhzojC5DzolT0YCidMlzRdqNqgCwe094rkIwozBW4WVVjROWmWJQI0cLOEwpble0/RxecxQ4DO2QwBGrjZBIWRcAm6lUaAkkAF3Y9AA+iyfO8Jm4kHFLeLx3iu0ZuhNmjgZhMUdtKiMFPgZhMUdtIiQAM3SyhsWb6XXDyUGQJ0zmbwAhrTmccNKGlRAos2EaAk1EID6LJ8L5mBMkOAztkM3jYomBk0gJIiRGGmwM0mKOykhR7Q9K4SGkCX5XvJxQsFdeZxu/hlkUOASs0J0ImW46bH3B+lAM1TGGnZIhdPZlCbIUDnbAZ/GzTZDBpASRFCH2aSSog2EaBz1nwAjSYUDaDL8r3k4rvyAhS3i18WOQQolBk0gJJIJhGgJNRCA+iyfC+ZgTJDgM7ZzMzaoCNdJdyAkiI0lzCTVEy0iQCds2YGaEzAHg2gy/K95OKhzBCgczZDgAZuNkFhpGWLACWhFhpAl+V7yYxDtq4Sbhc/z3M9sZl5tkFt0SbcgJIiNLcwk1RItIkAnbNmCmiI0AC6LN9LLh7KDAE6ZzMEaOBmExRGWrYIUNJE8usqoQF0Wb6XzIxrEG3C7eJnfa6nMjPvNui0gD5e3sAVRjKLwkyBm9U6XDeThK2evkwsjOQWARq4GdN+dcWeQmvQZflecvFQZjK4+MP1+QMBWkQEaOBmUpsnd9QGJflpJNqUp5O0XV0RoCQvjdxJl6kX/3i5WpGLJzM+agAtGmY63hKg+bWsNqixJkUTqCdFaFFhprWR0AyA1pWnKwpKgMKJAA3cjGkr4qBNQNSzsGX5XnLxwVrXZgyEggN6vG2w3LJ4qG9hyyKHAA3VuhSgh+umc7SnoU6Sr0S0aUgomhqUdNqS4dABoTnaoLIKpTYomfHWWpopAGiTz2SpPwlQOC2nDaoAHRBKcdA5azFhprXhlRABOmctB1BN3U/QBOqX5XvJxUOZKRioP6XluO/L2NlNfZxFHrCAUpiJBCkK1JNQC02g3rMqTxWZmZkZCtTP2Qx1kgI344oL1JMitJgwk10UB52zCNDAzRIKW5bvJRcPZSYnoFtbL96ke+O74FqWmV0ZM5OetIyABqmQ3yczyzRDgJIZ1GYIUDKD2gxoskiyhQSRmWWaAb2rM9VCisjMMs2ADnUmWkgSmVmmGdBkkUQLSSIzyzRDNSiZQW0GNFkk1UKKyMwyzYAmi5BI0KL8DhJqEaAk1CJASahFgJJQiwAloRYBSkItApSEWgQoCbUIUBJqEaAk1CJASahFgJJQKzOg25VjaU8oPX6ep6fuV6snd9nN8PteQrK54swwbXJm5UgzbO3Vi3xWlJl4DvICuq2J2ecm9HDN86f3zFZGQoWZ421tYpvxmsqjqdgPLiOg6qTVJg7X2Y8mgYOsgB5v2aFvcv5CecUpyLnKakuaEYuR22auADNT8eTGfIB2Tlr2o0nhYPaA7ldX+wLkKDPyr1w1tWZme/6dbIA2J+31nG2ixgxaQMu4+Eo710F3S8WYEdrkN1MfT9Y2KDezf/qX13lb1HvULj5/x0UY4eea28nZCG0BDbvnJcoMc775Ad0yDyzqt5xmUjjICyiraR4vc/5CmUoDus/a75V1Tg1nAUCflHE7CRxkBTR3j0KqsIvPWn/qR1MAUH5I4jJlNJPCQVZA89dqwkyJ7nUD6DYvn8r3CmUmRxxSzq5SsncrUIPmrNW49iXCTI3vzd3na09X/hpUTMaR3e2kcLCYNmj2QL0612WOhik/oLypq83IkcsM1jZovWeZxwW5Gt+bN2Kg+94iwYICgLLudYEwUwIHlCxCQi0ClIRaBCgJtQhQEmoRoCTUIkBJqEWAklCLACWhFgFKQi0ClIRaBCgJtQhQEmoRoCTUIkBJqEWAklCLACWhFgFKQi0ClIRaBCgJtQhQEmoRoCTUIkBJqEWAklCLACWhFgFKQi0ClIRaBCgJtQhQHx2u5XSIsfPA7d1T4h1vb9gsSTfidW2Hzcp0eCv73NQzEAHqq5RZNMU0h3ZtL6rDV1/W/9T0uBs2O9k+5+RhcxEB6quMgLKPJaBytuPjLZ8XMfsaaPhFgPpKAboVMwk+Xn6TLZDBVmq7qT/73qWcX1B+fHjru6w9sOGzJLONzv+eQVqjKD/ZahMSimmIuYvfylrzt2r2zlMXAeorCShbd4DNxfp4yZecY6g9fVkTeCPWWVEfH64ZXGzCZ/YOryIVoPwTtR1XOy90d8WN7JOnz0AEqK8EoIdrBtWeMXkl51uuvbJAra7wmo/5C97NYU67C+iVVkzVlFn1XlZ5VzeYiwhQX8llRHilxpm8kQSpP9hnzcdNq5N77i6gN1oxbBOthdoFtPvXaYoA9ZUEVC2/0QVUwdt8LKCrG5pP/2JQg95oxfCS24qy6+IJUALUX3oNWrVs9gBVH3MMm20sNWilbSul+kW8QUuAEqD+Um1QCVPPxfPgJWuDyo8FhqJ3rgC9ap1/J+6kc6iHmagNWhGg/tJ68SyO3gNUrZaqPm5q0MP16oojyJg73jbOX27Hi9ZXd+KBer4qPfXimQhQX+lx0Kcv+zXo1y9lg1J+3LRBn9wxDDcrVruuVt+8Vt2nrTZw2lniig+rCkdPcVACFEaJvtgy0DQ2QHoSIkAhlNpY3BpXcKSx+IoAhVEqoMZRd8pmYvp/TOaLN/iDBIEAAAAASUVORK5CYII=" alt="Built-in temperature sensitivity plot. Each point shows the p required to achieve the target weight at a given temperature offset." />
+<div class="figcaption">Built-in temperature sensitivity plot. Each
+point shows the p required to achieve the target weight at a given
+temperature offset.</div>
+</div>
+<hr />
+</div>
+<div id="climate-change-scenarios-projected-growth" class="section level2">
+<h2>4. Climate change scenarios — projected growth</h2>
+<p>Rather than fixing a target weight, here we fix <em>p</em> = 0.65
+(estimated from field data) and ask: <em>how does final weight change
+under warming scenarios?</em></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>p_fixed   <span class="ot">&lt;-</span> <span class="fl">0.65</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>scenarios <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Baseline&quot;</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">&quot;+1 °C&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;+2 °C&quot;</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">&quot;+4 °C&quot;</span> <span class="ot">=</span> <span class="dv">4</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>scenario_results <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">names</span>(scenarios), <span class="cf">function</span>(sc) {</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  delta <span class="ot">&lt;-</span> scenarios[[sc]]</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  temp_s <span class="ot">&lt;-</span> temp_base</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  temp_s<span class="sc">$</span>Temperature <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">1</span>, temp_base<span class="sc">$</span>Temperature <span class="sc">+</span> delta)</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  bio_s <span class="ot">&lt;-</span> <span class="fu">make_bio</span>(temp_s, sp_params_chinook)</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  res   <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio_s,</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>                   <span class="at">fit_to    =</span> <span class="st">&quot;p_value&quot;</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>                   <span class="at">fit_value =</span> p_fixed,</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>                   <span class="at">strategy  =</span> <span class="st">&quot;direct_p_value&quot;</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>                   <span class="at">verbose   =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(res)) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>    <span class="at">Scenario    =</span> sc,</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>    <span class="at">Delta_T     =</span> delta,</span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>    <span class="at">Final_wt_g  =</span> <span class="fu">round</span>(res<span class="sc">$</span>summary<span class="sc">$</span>final_weight,       <span class="dv">1</span>),</span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>    <span class="at">Consumption =</span> <span class="fu">round</span>(res<span class="sc">$</span>summary<span class="sc">$</span>total_consumption_g, <span class="dv">1</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>  )</span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>})</span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>scenario_df <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, scenario_results)</span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>  scenario_df,</span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a>  <span class="at">caption   =</span> <span class="fu">paste0</span>(<span class="st">&quot;Projected outcomes at p = &quot;</span>, p_fixed,</span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>                     <span class="st">&quot; under four temperature scenarios&quot;</span>),</span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a>  <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;Scenario&quot;</span>, <span class="st">&quot;Δ T (°C)&quot;</span>, <span class="st">&quot;Final weight (g)&quot;</span>, <span class="st">&quot;Total consumption (g)&quot;</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>)</span></code></pre></div>
+<table>
+<caption>Projected outcomes at p = 0.65 under four temperature
+scenarios</caption>
+<thead>
+<tr class="header">
+<th align="left">Scenario</th>
+<th align="right">Δ T (°C)</th>
+<th align="right">Final weight (g)</th>
+<th align="right">Total consumption (g)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Baseline</td>
+<td align="right">0</td>
+<td align="right">111.1</td>
+<td align="right">264.1</td>
+</tr>
+<tr class="even">
+<td align="left">+1 °C</td>
+<td align="right">1</td>
+<td align="right">125.8</td>
+<td align="right">306.8</td>
+</tr>
+<tr class="odd">
+<td align="left">+2 °C</td>
+<td align="right">2</td>
+<td align="right">137.4</td>
+<td align="right">343.6</td>
+</tr>
+<tr class="even">
+<td align="left">+4 °C</td>
+<td align="right">4</td>
+<td align="right">138.3</td>
+<td align="right">362.4</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>bar_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;steelblue&quot;</span>, <span class="st">&quot;gold&quot;</span>, <span class="st">&quot;darkorange&quot;</span>, <span class="st">&quot;firebrick&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>bp <span class="ot">&lt;-</span> <span class="fu">barplot</span>(scenario_df<span class="sc">$</span>Final_wt_g,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>              <span class="at">names.arg =</span> scenario_df<span class="sc">$</span>Scenario,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>              <span class="at">col       =</span> bar_cols,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>              <span class="at">ylab      =</span> <span class="st">&quot;Final weight (g)&quot;</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>              <span class="at">main      =</span> <span class="fu">paste</span>(<span class="st">&quot;Growth at p =&quot;</span>, p_fixed,</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>                                <span class="st">&quot;under warming scenarios&quot;</span>),</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>              <span class="at">ylim      =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(scenario_df<span class="sc">$</span>Final_wt_g) <span class="sc">*</span> <span class="fl">1.25</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>              <span class="at">border    =</span> <span class="cn">NA</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="fu">text</span>(bp, scenario_df<span class="sc">$</span>Final_wt_g <span class="sc">+</span> <span class="fl">0.5</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>     <span class="at">labels =</span> <span class="fu">paste0</span>(scenario_df<span class="sc">$</span>Final_wt_g, <span class="st">&quot; g&quot;</span>),</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>     <span class="at">cex =</span> <span class="fl">0.85</span>, <span class="at">font =</span> <span class="dv">2</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="fu">grid</span>(<span class="at">nx =</span> <span class="cn">NA</span>, <span class="at">ny =</span> <span class="cn">NULL</span>, <span class="at">col =</span> <span class="st">&quot;gray85&quot;</span>)</span></code></pre></div>
+<div class="float">
+<img role="img" aria-label="Projected final weight under climate change scenarios (p fixed at 0.65)." src="data:image/png;base64,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" alt="Projected final weight under climate change scenarios (p fixed at 0.65)." />
+<div class="figcaption">Projected final weight under climate change
+scenarios (p fixed at 0.65).</div>
+</div>
+<hr />
+</div>
+<div id="thermal-performance-window" class="section level2">
+<h2>5. Thermal performance window</h2>
+<p>The metabolism–consumption balance defines a <strong>thermal
+performance window</strong>: the temperature range where the fish can
+maintain positive growth (<em>p</em> &lt; 1). We can derive it by
+finding the temperature at which <em>p</em> = 1 for our target
+weight.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Sweep a fine temperature grid and record required p</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>temp_grid   <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">24</span>, <span class="at">by =</span> <span class="dv">1</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>p_at_target <span class="ot">&lt;-</span> <span class="fu">sapply</span>(temp_grid, <span class="cf">function</span>(t_const) {</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  temp_const <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> days, <span class="at">Temperature =</span> t_const)</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  bio_t <span class="ot">&lt;-</span> <span class="fu">make_bio</span>(temp_const, sp_params_chinook)</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio_t,</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>                   <span class="at">fit_to    =</span> <span class="st">&quot;Weight&quot;</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>                   <span class="at">fit_value =</span> target_wt,</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>                   <span class="at">strategy  =</span> <span class="st">&quot;binary_search&quot;</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>                   <span class="at">verbose   =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>    res<span class="sc">$</span>summary<span class="sc">$</span>p_value</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NA_real_</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>})</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>perf_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Temperature =</span> temp_grid, <span class="at">p_required =</span> p_at_target)</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>feasible <span class="ot">&lt;-</span> perf_df[<span class="sc">!</span><span class="fu">is.na</span>(perf_df<span class="sc">$</span>p_required) <span class="sc">&amp;</span> perf_df<span class="sc">$</span>p_required <span class="sc">&lt;=</span> <span class="dv">1</span>, ]</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Feasible temperature range for %.0f g in %d days : %.0f – %.0f °C</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>            target_wt, <span class="fu">max</span>(days),</span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>            <span class="fu">min</span>(feasible<span class="sc">$</span>Temperature), <span class="fu">max</span>(feasible<span class="sc">$</span>Temperature)))</span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#&gt; Feasible temperature range for 40 g in 120 days : 2 – 19 °C</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">plot</span>(perf_df<span class="sc">$</span>Temperature, perf_df<span class="sc">$</span>p_required,</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Constant water temperature (°C)&quot;</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;p required to achieve 40 g&quot;</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Thermal performance window — juvenile Chinook&quot;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(perf_df<span class="sc">$</span>p_required, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> <span class="fl">1.1</span>))</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co"># Shade feasible zone</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(<span class="fu">min</span>(feasible<span class="sc">$</span>Temperature), feasible<span class="sc">$</span>Temperature,</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>          <span class="fu">max</span>(feasible<span class="sc">$</span>Temperature)),</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>        <span class="fu">c</span>(<span class="dv">0</span>, feasible<span class="sc">$</span>p_required, <span class="dv">0</span>),</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">adjustcolor</span>(<span class="st">&quot;steelblue&quot;</span>, <span class="at">alpha.f =</span> <span class="fl">0.2</span>),</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>        <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">1</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;firebrick&quot;</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">max</span>(temp_grid) <span class="sc">-</span> <span class="dv">2</span>, <span class="fl">1.02</span>, <span class="st">&quot;p = 1 (maximum ration)&quot;</span>, <span class="at">col =</span> <span class="st">&quot;firebrick&quot;</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
+<div class="float">
+<img role="img" aria-label="Thermal performance window: p required to achieve 40 g over 120 days at constant temperatures. The shaded region shows the feasible window (p ≤ 1)." src="data:image/png;base64,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" alt="Thermal performance window: p required to achieve 40 g over 120 days at constant temperatures. The shaded region shows the feasible window (p ≤ 1)." />
+<div class="figcaption">Thermal performance window: p required to
+achieve 40 g over 120 days at constant temperatures. The shaded region
+shows the feasible window (p ≤ 1).</div>
+</div>
+<hr />
+</div>
+<div id="management-implications" class="section level2">
+<h2>6. Management implications</h2>
+<p>These analyses have direct relevance for fish management under
+climate change:</p>
+<ul>
+<li><strong>Habitat quality</strong>: The thermal performance window
+defines suitable temperature ranges for stocking or conservation
+planning.</li>
+<li><strong>Consumption modelling</strong>: Holding <em>p</em> fixed
+while warming temperatures leads to <em>lower</em> growth at very warm
+temperatures, as respiration increases faster than consumption.</li>
+<li><strong>Bioenergetics-based monitoring</strong>: Changes in
+condition factor (<em>K</em>) in monitoring data can be translated into
+shifts in <em>p</em> using this framework, providing a mechanistic link
+between climate variability and fish condition.</li>
+</ul>
+<hr />
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>Deslauriers D, Chipps SR, Breck JE, Rice JA, Madenjian CP (2017).
+Fish Bioenergetics 4.0: An R-Based Modeling Application.
+<em>Fisheries</em> 42(11):586–596. <a href="https://doi.org/10.1080/03632415.2017.1377558" class="uri">https://doi.org/10.1080/03632415.2017.1377558</a></p>
+<p>Kitchell JF, Stewart DJ, Weininger D (1977). Applications of a
+bioenergetics model to yellow perch (<em>Perca flavescens</em>) and
+walleye (<em>Stizostedion vitreum vitreum</em>). <em>Journal of the
+Fisheries Research Board of Canada</em> 34(10):1922–1935. <a href="https://doi.org/10.1139/f77-258" class="uri">https://doi.org/10.1139/f77-258</a></p>
+<p>Parmesan C, Yohe G (2003). A globally coherent fingerprint of climate
+change impacts across natural systems. <em>Nature</em> 421:37–42. <a href="https://doi.org/10.1038/nature01286" class="uri">https://doi.org/10.1038/nature01286</a></p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
