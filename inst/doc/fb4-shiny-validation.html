@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Hans Ttito" />
+
+<meta name="date" content="2026-06-09" />
+
+<title>Validation against FB4-Shiny</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Validation against FB4-Shiny</h1>
+<h4 class="author">Hans Ttito</h4>
+<h4 class="date">2026-06-09</h4>
+
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>This article verifies that <code>fb4package</code> produces results
+numerically identical to the original <strong>FB4-Shiny</strong>
+application (Deslauriers et al. 2017, v1.1.7) across all five simulation
+modes and across the nutrient and contaminant sub-models.</p>
+<p>The reference implementation consists of the exact arithmetic from
+<code>server.R</code> of FB4-Shiny, adapted to accept R objects instead
+of CSV uploads. Both implementations receive <strong>identical
+inputs</strong>: same species parameters (pulled from
+<code>fish4_parameters</code>), same temperature series, same diet, and
+same initial conditions.</p>
+<hr />
+</div>
+<div id="shared-setup" class="section level2">
+<h2>1. Shared setup</h2>
+<div id="species-parameters-chinook-salmon" class="section level3">
+<h3>Species parameters — Chinook salmon</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">data</span>(fish4_parameters)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>chinook_key <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">&quot;tshawytscha&quot;</span>, <span class="fu">names</span>(fish4_parameters), <span class="at">value =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>]</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>db    <span class="ot">&lt;-</span> fish4_parameters[[chinook_key]]</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>stage <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="st">&quot;adult&quot;</span> <span class="sc">%in%</span> <span class="fu">names</span>(db<span class="sc">$</span>life_stages)) <span class="st">&quot;adult&quot;</span> <span class="cf">else</span> <span class="fu">names</span>(db<span class="sc">$</span>life_stages)[<span class="dv">1</span>]</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>sp    <span class="ot">&lt;-</span> db<span class="sc">$</span>life_stages[[stage]]</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Species:&quot;</span>, chinook_key, <span class="st">&quot;| Stage:&quot;</span>, stage, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt; Species: Oncorhynchus tshawytscha | Stage: adult</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;CEQ:&quot;</span>, sp<span class="sc">$</span>consumption<span class="sc">$</span>CEQ,</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>    <span class="st">&quot; CA:&quot;</span>, sp<span class="sc">$</span>consumption<span class="sc">$</span>CA,</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    <span class="st">&quot; CB:&quot;</span>, sp<span class="sc">$</span>consumption<span class="sc">$</span>CB, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co">#&gt; CEQ: 3  CA: 0.303  CB: -0.275</span></span></code></pre></div>
+</div>
+<div id="scalar-extraction-helper" class="section level3">
+<h3>Scalar extraction helper</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>gp <span class="ot">&lt;-</span> <span class="cf">function</span>(cat, nm) {</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  v <span class="ot">&lt;-</span> sp[[cat]][[nm]]</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(v)) <span class="cn">NA_real_</span> <span class="cf">else</span> <span class="fu">as.numeric</span>(v)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>}</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>CEQ <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;consumption&quot;</span>,<span class="st">&quot;CEQ&quot;</span>); CA  <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;consumption&quot;</span>,<span class="st">&quot;CA&quot;</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>CB  <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;consumption&quot;</span>,<span class="st">&quot;CB&quot;</span>);  CQ  <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;consumption&quot;</span>,<span class="st">&quot;CQ&quot;</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>CTO <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;consumption&quot;</span>,<span class="st">&quot;CTO&quot;</span>); CTM <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;consumption&quot;</span>,<span class="st">&quot;CTM&quot;</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>CTL <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;consumption&quot;</span>,<span class="st">&quot;CTL&quot;</span>); CK1 <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;consumption&quot;</span>,<span class="st">&quot;CK1&quot;</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>CK4 <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;consumption&quot;</span>,<span class="st">&quot;CK4&quot;</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>REQ <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;respiration&quot;</span>,<span class="st">&quot;REQ&quot;</span>); RA  <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;respiration&quot;</span>,<span class="st">&quot;RA&quot;</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>RB  <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;respiration&quot;</span>,<span class="st">&quot;RB&quot;</span>);  RQ  <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;respiration&quot;</span>,<span class="st">&quot;RQ&quot;</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>RTO <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;respiration&quot;</span>,<span class="st">&quot;RTO&quot;</span>); RTM <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;respiration&quot;</span>,<span class="st">&quot;RTM&quot;</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>RTL <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;respiration&quot;</span>,<span class="st">&quot;RTL&quot;</span>); RK1 <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;respiration&quot;</span>,<span class="st">&quot;RK1&quot;</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>RK4 <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;respiration&quot;</span>,<span class="st">&quot;RK4&quot;</span>); RK5 <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;respiration&quot;</span>,<span class="st">&quot;RK5&quot;</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>ACT  <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;activity&quot;</span>,<span class="st">&quot;ACT&quot;</span>);  BACT <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;activity&quot;</span>,<span class="st">&quot;BACT&quot;</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>SDA  <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;sda&quot;</span>,<span class="st">&quot;SDA&quot;</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>EGEQ <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;egestion&quot;</span>,<span class="st">&quot;EGEQ&quot;</span>); FA <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;egestion&quot;</span>,<span class="st">&quot;FA&quot;</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>FB_  <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;egestion&quot;</span>,<span class="st">&quot;FB&quot;</span>);   FG <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;egestion&quot;</span>,<span class="st">&quot;FG&quot;</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>EXEQ <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;excretion&quot;</span>,<span class="st">&quot;EXEQ&quot;</span>); UA <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;excretion&quot;</span>,<span class="st">&quot;UA&quot;</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>UB   <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;excretion&quot;</span>,<span class="st">&quot;UB&quot;</span>);  UG <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;excretion&quot;</span>,<span class="st">&quot;UG&quot;</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a>PREDEDEQ <span class="ot">&lt;-</span> <span class="fu">gp</span>(<span class="st">&quot;predator&quot;</span>,<span class="st">&quot;PREDEDEQ&quot;</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a>Oxycal <span class="ot">&lt;-</span> <span class="dv">13560</span></span></code></pre></div>
+</div>
+<div id="derived-temperature-coefficients" class="section level3">
+<h3>Derived temperature coefficients</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(CEQ) <span class="sc">&amp;&amp;</span> CEQ <span class="sc">==</span> <span class="dv">2</span>) {</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  CY <span class="ot">&lt;-</span> <span class="fu">log</span>(CQ)<span class="sc">*</span>(CTM<span class="sc">-</span>CTO<span class="sc">+</span><span class="dv">2</span>); CZ <span class="ot">&lt;-</span> <span class="fu">log</span>(CQ)<span class="sc">*</span>(CTM<span class="sc">-</span>CTO)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  CX <span class="ot">&lt;-</span> (CZ<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">+</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">40</span><span class="sc">/</span>CY)<span class="sc">^</span><span class="fl">0.5</span>)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="dv">400</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(CEQ) <span class="sc">&amp;&amp;</span> CEQ <span class="sc">==</span> <span class="dv">3</span>) {</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  CG1 <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">/</span>(CTO<span class="sc">-</span>CQ))<span class="sc">*</span><span class="fu">log</span>((<span class="fl">0.98</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>CK1))<span class="sc">/</span>(CK1<span class="sc">*</span><span class="fl">0.02</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  CG2 <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">/</span>(CTL<span class="sc">-</span>CTM))<span class="sc">*</span><span class="fu">log</span>((<span class="fl">0.98</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>CK4))<span class="sc">/</span>(CK4<span class="sc">*</span><span class="fl">0.02</span>))</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>}</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.na</span>(REQ) <span class="sc">&amp;&amp;</span> REQ <span class="sc">==</span> <span class="dv">2</span>) {</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  RY <span class="ot">&lt;-</span> <span class="fu">log</span>(RQ)<span class="sc">*</span>(RTM<span class="sc">-</span>RTO<span class="sc">+</span><span class="dv">2</span>); RZ <span class="ot">&lt;-</span> <span class="fu">log</span>(RQ)<span class="sc">*</span>(RTM<span class="sc">-</span>RTO)</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>  RX <span class="ot">&lt;-</span> (RZ<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">+</span>(<span class="dv">1</span><span class="sc">+</span><span class="dv">40</span><span class="sc">/</span>RY)<span class="sc">^</span><span class="fl">0.5</span>)<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span><span class="dv">400</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="simulation-inputs" class="section level3">
+<h3>Simulation inputs</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>N_DIAS  <span class="ot">&lt;-</span> <span class="dv">180</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>Init_W  <span class="ot">&lt;-</span> <span class="dv">500</span>     <span class="co"># g</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>p_fixed <span class="ot">&lt;-</span> <span class="fl">0.4</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>ED_ini  <span class="ot">&lt;-</span> <span class="dv">4200</span>; ED_fin <span class="ot">&lt;-</span> <span class="dv">4600</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>days     <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>N_DIAS</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>base_T   <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="sc">+</span> <span class="dv">4</span><span class="sc">*</span><span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>(days<span class="dv">-30</span>)<span class="sc">/</span>N_DIAS)</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>Temp_vec <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">pmax</span>(<span class="dv">2</span>, base_T <span class="sc">+</span> <span class="fu">rnorm</span>(N_DIAS, <span class="dv">0</span>, <span class="fl">0.3</span>)), <span class="dv">2</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>prey_prop_mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="fl">0.7</span>, N_DIAS), <span class="fu">rep</span>(<span class="fl">0.3</span>, N_DIAS)),</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>                        <span class="at">nrow =</span> N_DIAS,</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>                        <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="cn">NULL</span>, <span class="fu">c</span>(<span class="st">&quot;Alewife&quot;</span>,<span class="st">&quot;Inverts&quot;</span>)))</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>prey_ED_mat   <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">4900</span>, N_DIAS), <span class="fu">rep</span>(<span class="dv">2600</span>, N_DIAS)),</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>                        <span class="at">nrow =</span> N_DIAS,</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>                        <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="cn">NULL</span>, <span class="fu">c</span>(<span class="st">&quot;Alewife&quot;</span>,<span class="st">&quot;Inverts&quot;</span>)))</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>ind_prey_mat  <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> N_DIAS, <span class="at">ncol =</span> <span class="dv">2</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>                        <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="cn">NULL</span>, <span class="fu">c</span>(<span class="st">&quot;Alewife&quot;</span>,<span class="st">&quot;Inverts&quot;</span>)))</span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>Pred_E_vec    <span class="ot">&lt;-</span> <span class="fu">seq</span>(ED_ini, ED_fin, <span class="at">length.out =</span> N_DIAS <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;%d days | W0 = %.0f g | p = %.2f | T = %.1f–%.1f °C</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>            N_DIAS, Init_W, p_fixed, <span class="fu">min</span>(Temp_vec), <span class="fu">max</span>(Temp_vec)))</span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; 180 days | W0 = 500 g | p = 0.40 | T = 5.6–14.6 °C</span></span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="fb4-shiny-reference-implementation" class="section level2">
+<h2>2. FB4-Shiny reference implementation</h2>
+<p>The functions below reproduce the arithmetic of <code>server.R</code>
+verbatim.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># --- Temperature functions ---</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>Cf1T <span class="ot">&lt;-</span> <span class="cf">function</span>(T) <span class="fu">exp</span>(CQ<span class="sc">*</span>T)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>Cf2T <span class="ot">&lt;-</span> <span class="cf">function</span>(T) {</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="cf">if</span> (T <span class="sc">&lt;</span> CTM) { V <span class="ot">&lt;-</span> (CTM<span class="sc">-</span>T)<span class="sc">/</span>(CTM<span class="sc">-</span>CTO); ft <span class="ot">&lt;-</span> V<span class="sc">^</span>CX<span class="sc">*</span><span class="fu">exp</span>(CX<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>V)) } <span class="cf">else</span> ft <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="fu">max</span>(ft, <span class="dv">0</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>}</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>Cf3T <span class="ot">&lt;-</span> <span class="cf">function</span>(T) {</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  L1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(CG1<span class="sc">*</span>(T<span class="sc">-</span>CQ)); KA <span class="ot">&lt;-</span> (CK1<span class="sc">*</span>L1)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>CK1<span class="sc">*</span>(L1<span class="dv">-1</span>))</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  L2 <span class="ot">&lt;-</span> <span class="fu">exp</span>(CG2<span class="sc">*</span>(CTL<span class="sc">-</span>T)); KB <span class="ot">&lt;-</span> (CK4<span class="sc">*</span>L2)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>CK4<span class="sc">*</span>(L2<span class="dv">-1</span>))</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  KA<span class="sc">*</span>KB</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>}</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>Cf4T <span class="ot">&lt;-</span> <span class="cf">function</span>(T) <span class="fu">max</span>(<span class="fu">exp</span>(CQ<span class="sc">*</span>T <span class="sc">+</span> CK1<span class="sc">*</span>T<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> CK4<span class="sc">*</span>T<span class="sc">^</span><span class="dv">3</span>), <span class="dv">0</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>Rf1T    <span class="ot">&lt;-</span> <span class="cf">function</span>(T) <span class="fu">exp</span>(RQ<span class="sc">*</span>T)</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>RACTf1T <span class="ot">&lt;-</span> <span class="cf">function</span>(W,T) {</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>  VEL <span class="ot">&lt;-</span> <span class="cf">if</span> (T <span class="sc">&lt;=</span> RTL) ACT<span class="sc">*</span>W<span class="sc">^</span>RK4<span class="sc">*</span><span class="fu">exp</span>(BACT<span class="sc">*</span>T) <span class="cf">else</span> RK1<span class="sc">*</span>W<span class="sc">^</span>RK4<span class="sc">*</span><span class="fu">exp</span>(RK5<span class="sc">*</span>T)</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>  <span class="fu">exp</span>(RTO<span class="sc">*</span>VEL)</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>}</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>Rf2T <span class="ot">&lt;-</span> <span class="cf">function</span>(T) {</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>  <span class="cf">if</span> (T <span class="sc">&lt;</span> RTM) { V <span class="ot">&lt;-</span> (RTM<span class="sc">-</span>T)<span class="sc">/</span>(RTM<span class="sc">-</span>RTO); ft <span class="ot">&lt;-</span> V<span class="sc">^</span>RX<span class="sc">*</span><span class="fu">exp</span>(RX<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>V)) } <span class="cf">else</span> ft <span class="ot">&lt;-</span> <span class="fl">1e-6</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>  <span class="fu">max</span>(ft, <span class="fl">1e-6</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>}</span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co"># --- Bioenergetic functions ---</span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>consumo_fn <span class="ot">&lt;-</span> <span class="cf">function</span>(T, W, p) {</span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>  Cmax <span class="ot">&lt;-</span> CA<span class="sc">*</span>W<span class="sc">^</span>CB</span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>  ft   <span class="ot">&lt;-</span> <span class="cf">switch</span>(<span class="fu">as.character</span>(CEQ),</span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>                 <span class="st">&quot;1&quot;</span> <span class="ot">=</span> <span class="fu">Cf1T</span>(T), <span class="st">&quot;2&quot;</span> <span class="ot">=</span> <span class="fu">Cf2T</span>(T),</span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>                 <span class="st">&quot;3&quot;</span> <span class="ot">=</span> <span class="fu">Cf3T</span>(T), <span class="st">&quot;4&quot;</span> <span class="ot">=</span> <span class="fu">Cf4T</span>(T))</span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a>  Cmax<span class="sc">*</span>p<span class="sc">*</span>ft</span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>}</span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>respiracion_fn <span class="ot">&lt;-</span> <span class="cf">function</span>(T, W) {</span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>  Rmax <span class="ot">&lt;-</span> RA<span class="sc">*</span>W<span class="sc">^</span>RB</span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a>  <span class="cf">if</span> (REQ <span class="sc">==</span> <span class="dv">1</span>) { ft <span class="ot">&lt;-</span> <span class="fu">Rf1T</span>(T); ACT_v <span class="ot">&lt;-</span> <span class="fu">RACTf1T</span>(W,T) } <span class="cf">else</span> { ft <span class="ot">&lt;-</span> <span class="fu">Rf2T</span>(T); ACT_v <span class="ot">&lt;-</span> ACT }</span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a>  Rmax<span class="sc">*</span>ft<span class="sc">*</span>ACT_v</span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a>}</span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a></span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a>egestion_fn <span class="ot">&lt;-</span> <span class="cf">function</span>(C, T, p, i) {</span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a>  <span class="cf">switch</span>(<span class="fu">as.character</span>(EGEQ),</span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a>    <span class="st">&quot;1&quot;</span> <span class="ot">=</span> FA<span class="sc">*</span>C,</span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a>    <span class="st">&quot;2&quot;</span> <span class="ot">=</span> FA<span class="sc">*</span>(T<span class="sc">^</span>FB_)<span class="sc">*</span><span class="fu">exp</span>(FG<span class="sc">*</span>p)<span class="sc">*</span>C,</span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a>    <span class="st">&quot;3&quot;</span> <span class="ot">=</span> { PE  <span class="ot">&lt;-</span> FA<span class="sc">*</span>(T<span class="sc">^</span>FB_)<span class="sc">*</span><span class="fu">exp</span>(FG<span class="sc">*</span>p)</span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a>            PFF <span class="ot">&lt;-</span> <span class="fu">sum</span>(ind_prey_mat[i,]<span class="sc">*</span>prey_prop_mat[i,])</span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a>            PF  <span class="ot">&lt;-</span> ((PE<span class="fl">-0.1</span>)<span class="sc">/</span><span class="fl">0.9</span>)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>PFF)<span class="sc">+</span>PFF; PF<span class="sc">*</span>C },</span>
+<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a>    <span class="st">&quot;4&quot;</span> <span class="ot">=</span> FA<span class="sc">*</span>(T<span class="sc">^</span>FB_)<span class="sc">*</span>C)</span>
+<span id="cb5-47"><a href="#cb5-47" tabindex="-1"></a>}</span>
+<span id="cb5-48"><a href="#cb5-48" tabindex="-1"></a></span>
+<span id="cb5-49"><a href="#cb5-49" tabindex="-1"></a>excrecion_fn <span class="ot">&lt;-</span> <span class="cf">function</span>(C, Eg, T, p) {</span>
+<span id="cb5-50"><a href="#cb5-50" tabindex="-1"></a>  <span class="cf">switch</span>(<span class="fu">as.character</span>(EXEQ),</span>
+<span id="cb5-51"><a href="#cb5-51" tabindex="-1"></a>    <span class="st">&quot;1&quot;</span> <span class="ot">=</span> UA<span class="sc">*</span>(C<span class="sc">-</span>Eg),</span>
+<span id="cb5-52"><a href="#cb5-52" tabindex="-1"></a>    <span class="st">&quot;2&quot;</span> <span class="ot">=</span>, <span class="st">&quot;3&quot;</span> <span class="ot">=</span> UA<span class="sc">*</span>(T<span class="sc">^</span>UB)<span class="sc">*</span><span class="fu">exp</span>(UG<span class="sc">*</span>p)<span class="sc">*</span>(C<span class="sc">-</span>Eg),</span>
+<span id="cb5-53"><a href="#cb5-53" tabindex="-1"></a>    <span class="st">&quot;4&quot;</span> <span class="ot">=</span> UA<span class="sc">*</span>(T<span class="sc">^</span>UB)<span class="sc">*</span>(C<span class="sc">-</span>Eg))</span>
+<span id="cb5-54"><a href="#cb5-54" tabindex="-1"></a>}</span>
+<span id="cb5-55"><a href="#cb5-55" tabindex="-1"></a></span>
+<span id="cb5-56"><a href="#cb5-56" tabindex="-1"></a><span class="co"># --- Daily growth loop ---</span></span>
+<span id="cb5-57"><a href="#cb5-57" tabindex="-1"></a>grow_shiny_daily <span class="ot">&lt;-</span> <span class="cf">function</span>(Temperature, W, <span class="at">mode =</span> <span class="st">&quot;p_value&quot;</span>, <span class="at">mode_value =</span> <span class="fl">0.4</span>,</span>
+<span id="cb5-58"><a href="#cb5-58" tabindex="-1"></a>                             prey_pm, prey_em, Fin) {</span>
+<span id="cb5-59"><a href="#cb5-59" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">&quot;list&quot;</span>, Fin)</span>
+<span id="cb5-60"><a href="#cb5-60" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(Fin)) {</span>
+<span id="cb5-61"><a href="#cb5-61" tabindex="-1"></a>    Pred_E_i  <span class="ot">&lt;-</span> Pred_E_vec[<span class="fu">min</span>(i,   <span class="fu">length</span>(Pred_E_vec))]</span>
+<span id="cb5-62"><a href="#cb5-62" tabindex="-1"></a>    Pred_E_ip1 <span class="ot">&lt;-</span> Pred_E_vec[<span class="fu">min</span>(i<span class="sc">+</span><span class="dv">1</span>, <span class="fu">length</span>(Pred_E_vec))]</span>
+<span id="cb5-63"><a href="#cb5-63" tabindex="-1"></a>    mean_prey <span class="ot">&lt;-</span> <span class="fu">sum</span>(prey_pm[i,] <span class="sc">*</span> prey_em[i,])</span>
+<span id="cb5-64"><a href="#cb5-64" tabindex="-1"></a></span>
+<span id="cb5-65"><a href="#cb5-65" tabindex="-1"></a>    <span class="cf">if</span> (mode <span class="sc">==</span> <span class="st">&quot;p_value&quot;</span>) {</span>
+<span id="cb5-66"><a href="#cb5-66" tabindex="-1"></a>      p       <span class="ot">&lt;-</span> mode_value</span>
+<span id="cb5-67"><a href="#cb5-67" tabindex="-1"></a>      Cons_gg <span class="ot">&lt;-</span> <span class="fu">consumo_fn</span>(Temperature[i], W, p)</span>
+<span id="cb5-68"><a href="#cb5-68" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (mode <span class="sc">==</span> <span class="st">&quot;Ration&quot;</span>) {</span>
+<span id="cb5-69"><a href="#cb5-69" tabindex="-1"></a>      Cons_gg <span class="ot">&lt;-</span> mode_value</span>
+<span id="cb5-70"><a href="#cb5-70" tabindex="-1"></a>      Cmax    <span class="ot">&lt;-</span> <span class="fu">consumo_fn</span>(Temperature[i], W, <span class="fl">1.0</span>)</span>
+<span id="cb5-71"><a href="#cb5-71" tabindex="-1"></a>      p       <span class="ot">&lt;-</span> <span class="cf">if</span> (Cmax <span class="sc">&gt;</span> <span class="dv">0</span>) Cons_gg<span class="sc">/</span>Cmax <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb5-72"><a href="#cb5-72" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (mode <span class="sc">==</span> <span class="st">&quot;Ration_prey&quot;</span>) {</span>
+<span id="cb5-73"><a href="#cb5-73" tabindex="-1"></a>      Cons_gg <span class="ot">&lt;-</span> mode_value <span class="sc">/</span> W</span>
+<span id="cb5-74"><a href="#cb5-74" tabindex="-1"></a>      Cmax    <span class="ot">&lt;-</span> <span class="fu">consumo_fn</span>(Temperature[i], W, <span class="fl">1.0</span>)</span>
+<span id="cb5-75"><a href="#cb5-75" tabindex="-1"></a>      p       <span class="ot">&lt;-</span> <span class="cf">if</span> (Cmax <span class="sc">&gt;</span> <span class="dv">0</span>) Cons_gg<span class="sc">/</span>Cmax <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb5-76"><a href="#cb5-76" tabindex="-1"></a>    }</span>
+<span id="cb5-77"><a href="#cb5-77" tabindex="-1"></a></span>
+<span id="cb5-78"><a href="#cb5-78" tabindex="-1"></a>    Cons <span class="ot">&lt;-</span> Cons_gg <span class="sc">*</span> mean_prey</span>
+<span id="cb5-79"><a href="#cb5-79" tabindex="-1"></a>    Eg   <span class="ot">&lt;-</span> <span class="fu">egestion_fn</span>(Cons, Temperature[i], p, i)</span>
+<span id="cb5-80"><a href="#cb5-80" tabindex="-1"></a>    Ex   <span class="ot">&lt;-</span> <span class="fu">excrecion_fn</span>(Cons, Eg, Temperature[i], p)</span>
+<span id="cb5-81"><a href="#cb5-81" tabindex="-1"></a>    S    <span class="ot">&lt;-</span> SDA<span class="sc">*</span>(Cons<span class="sc">-</span>Eg)</span>
+<span id="cb5-82"><a href="#cb5-82" tabindex="-1"></a>    Res  <span class="ot">&lt;-</span> <span class="fu">respiracion_fn</span>(Temperature[i], W)<span class="sc">*</span>Oxycal</span>
+<span id="cb5-83"><a href="#cb5-83" tabindex="-1"></a></span>
+<span id="cb5-84"><a href="#cb5-84" tabindex="-1"></a>    G      <span class="ot">&lt;-</span> Cons<span class="sc">-</span>(Res<span class="sc">+</span>Eg<span class="sc">+</span>Ex<span class="sc">+</span>S)</span>
+<span id="cb5-85"><a href="#cb5-85" tabindex="-1"></a>    egain  <span class="ot">&lt;-</span> G<span class="sc">*</span>W</span>
+<span id="cb5-86"><a href="#cb5-86" tabindex="-1"></a>    finalwt <span class="ot">&lt;-</span> (egain <span class="sc">+</span> Pred_E_i<span class="sc">*</span>W) <span class="sc">/</span> Pred_E_ip1</span>
+<span id="cb5-87"><a href="#cb5-87" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(finalwt) <span class="sc">||</span> finalwt <span class="sc">&lt;</span> <span class="dv">0</span>) finalwt <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb5-88"><a href="#cb5-88" tabindex="-1"></a></span>
+<span id="cb5-89"><a href="#cb5-89" tabindex="-1"></a>    out[[i]] <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb5-90"><a href="#cb5-90" tabindex="-1"></a>      <span class="at">Day                  =</span> i,</span>
+<span id="cb5-91"><a href="#cb5-91" tabindex="-1"></a>      <span class="at">Starting_Weight      =</span> W,</span>
+<span id="cb5-92"><a href="#cb5-92" tabindex="-1"></a>      <span class="at">Weight               =</span> finalwt,</span>
+<span id="cb5-93"><a href="#cb5-93" tabindex="-1"></a>      <span class="at">Weight_change        =</span> finalwt <span class="sc">-</span> W,</span>
+<span id="cb5-94"><a href="#cb5-94" tabindex="-1"></a>      <span class="at">Temperature          =</span> Temperature[i],</span>
+<span id="cb5-95"><a href="#cb5-95" tabindex="-1"></a>      <span class="at">Mean_Prey_Energy_J_g =</span> mean_prey,</span>
+<span id="cb5-96"><a href="#cb5-96" tabindex="-1"></a>      <span class="at">Consumption_gg       =</span> Cons_gg,</span>
+<span id="cb5-97"><a href="#cb5-97" tabindex="-1"></a>      <span class="at">Consumption_energy   =</span> Cons,</span>
+<span id="cb5-98"><a href="#cb5-98" tabindex="-1"></a>      <span class="at">Respiration          =</span> Res,</span>
+<span id="cb5-99"><a href="#cb5-99" tabindex="-1"></a>      <span class="at">Egestion             =</span> Eg,</span>
+<span id="cb5-100"><a href="#cb5-100" tabindex="-1"></a>      <span class="at">Excretion            =</span> Ex,</span>
+<span id="cb5-101"><a href="#cb5-101" tabindex="-1"></a>      <span class="at">SDA                  =</span> S,</span>
+<span id="cb5-102"><a href="#cb5-102" tabindex="-1"></a>      <span class="at">Net_energy           =</span> G,</span>
+<span id="cb5-103"><a href="#cb5-103" tabindex="-1"></a>      <span class="at">Energy_density       =</span> Pred_E_ip1,</span>
+<span id="cb5-104"><a href="#cb5-104" tabindex="-1"></a>      <span class="at">Cons_Alewife_g       =</span> Cons_gg<span class="sc">*</span>W<span class="sc">*</span>prey_pm[i,<span class="st">&quot;Alewife&quot;</span>],</span>
+<span id="cb5-105"><a href="#cb5-105" tabindex="-1"></a>      <span class="at">Cons_Inverts_g       =</span> Cons_gg<span class="sc">*</span>W<span class="sc">*</span>prey_pm[i,<span class="st">&quot;Inverts&quot;</span>]</span>
+<span id="cb5-106"><a href="#cb5-106" tabindex="-1"></a>    )</span>
+<span id="cb5-107"><a href="#cb5-107" tabindex="-1"></a>    W <span class="ot">&lt;-</span> finalwt</span>
+<span id="cb5-108"><a href="#cb5-108" tabindex="-1"></a>  }</span>
+<span id="cb5-109"><a href="#cb5-109" tabindex="-1"></a>  <span class="fu">as.data.frame</span>(<span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(out, as.data.frame)))</span>
+<span id="cb5-110"><a href="#cb5-110" tabindex="-1"></a>}</span>
+<span id="cb5-111"><a href="#cb5-111" tabindex="-1"></a></span>
+<span id="cb5-112"><a href="#cb5-112" tabindex="-1"></a><span class="co"># --- Binary search (Weight or Consumption target) ---</span></span>
+<span id="cb5-113"><a href="#cb5-113" tabindex="-1"></a>fit_p_shiny <span class="ot">&lt;-</span> <span class="cf">function</span>(IW, target, fit_type, Temperature,</span>
+<span id="cb5-114"><a href="#cb5-114" tabindex="-1"></a>                        prey_pm, prey_em, Fin,</span>
+<span id="cb5-115"><a href="#cb5-115" tabindex="-1"></a>                        <span class="at">W_tol =</span> <span class="fl">0.001</span>, <span class="at">max_iter =</span> <span class="dv">100</span>) {</span>
+<span id="cb5-116"><a href="#cb5-116" tabindex="-1"></a>  p_min <span class="ot">&lt;-</span> <span class="dv">0</span>; p_max <span class="ot">&lt;-</span> <span class="dv">5</span>; p <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb5-117"><a href="#cb5-117" tabindex="-1"></a></span>
+<span id="cb5-118"><a href="#cb5-118" tabindex="-1"></a>  sim_val <span class="ot">&lt;-</span> <span class="cf">function</span>(p_try) {</span>
+<span id="cb5-119"><a href="#cb5-119" tabindex="-1"></a>    df <span class="ot">&lt;-</span> <span class="fu">grow_shiny_daily</span>(Temperature, IW, <span class="st">&quot;p_value&quot;</span>, p_try, prey_pm, prey_em, Fin)</span>
+<span id="cb5-120"><a href="#cb5-120" tabindex="-1"></a>    <span class="cf">if</span> (fit_type <span class="sc">==</span> <span class="st">&quot;Weight&quot;</span>) <span class="fu">tail</span>(df<span class="sc">$</span>Weight, <span class="dv">1</span>)</span>
+<span id="cb5-121"><a href="#cb5-121" tabindex="-1"></a>    <span class="cf">else</span> <span class="fu">sum</span>(df<span class="sc">$</span>Consumption_gg <span class="sc">*</span> df<span class="sc">$</span>Starting_Weight)</span>
+<span id="cb5-122"><a href="#cb5-122" tabindex="-1"></a>  }</span>
+<span id="cb5-123"><a href="#cb5-123" tabindex="-1"></a></span>
+<span id="cb5-124"><a href="#cb5-124" tabindex="-1"></a>  val <span class="ot">&lt;-</span> <span class="fu">sim_val</span>(p)</span>
+<span id="cb5-125"><a href="#cb5-125" tabindex="-1"></a>  <span class="cf">for</span> (iter <span class="cf">in</span> <span class="fu">seq_len</span>(max_iter)) {</span>
+<span id="cb5-126"><a href="#cb5-126" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">abs</span>(val <span class="sc">-</span> target) <span class="sc">&lt;=</span> W_tol) <span class="cf">break</span></span>
+<span id="cb5-127"><a href="#cb5-127" tabindex="-1"></a>    <span class="cf">if</span> (val <span class="sc">&gt;</span> target) p_max <span class="ot">&lt;-</span> p <span class="cf">else</span> p_min <span class="ot">&lt;-</span> p</span>
+<span id="cb5-128"><a href="#cb5-128" tabindex="-1"></a>    p <span class="ot">&lt;-</span> (p_min <span class="sc">+</span> p_max)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb5-129"><a href="#cb5-129" tabindex="-1"></a>    val <span class="ot">&lt;-</span> <span class="fu">sim_val</span>(p)</span>
+<span id="cb5-130"><a href="#cb5-130" tabindex="-1"></a>  }</span>
+<span id="cb5-131"><a href="#cb5-131" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">p =</span> p, <span class="at">converged =</span> (<span class="fu">abs</span>(val<span class="sc">-</span>target) <span class="sc">&lt;=</span> W_tol), <span class="at">final_val =</span> val)</span>
+<span id="cb5-132"><a href="#cb5-132" tabindex="-1"></a>}</span></code></pre></div>
+<hr />
+</div>
+<div id="fb4package-object" class="section level2">
+<h2>3. <code>fb4package</code> object</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>sp_pkg <span class="ot">&lt;-</span> sp</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>sp_pkg<span class="sc">$</span>predator<span class="sc">$</span>PREDEDEQ <span class="ot">&lt;-</span> <span class="dv">1</span><span class="dt">L</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>sp_pkg<span class="sc">$</span>predator<span class="sc">$</span>ED_ini   <span class="ot">&lt;-</span> ED_ini</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>sp_pkg<span class="sc">$</span>predator<span class="sc">$</span>ED_end   <span class="ot">&lt;-</span> ED_fin</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>temp_df   <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> days, <span class="at">Temperature =</span> Temp_vec)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>diet_df   <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> days, <span class="at">Alewife =</span> prey_prop_mat[,<span class="st">&quot;Alewife&quot;</span>],</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>                                     <span class="at">Inverts =</span> prey_prop_mat[,<span class="st">&quot;Inverts&quot;</span>])</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>energy_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> days, <span class="at">Alewife =</span> prey_ED_mat[,<span class="st">&quot;Alewife&quot;</span>],</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>                                     <span class="at">Inverts =</span> prey_ED_mat[,<span class="st">&quot;Inverts&quot;</span>])</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>bio <span class="ot">&lt;-</span> <span class="fu">Bioenergetic</span>(</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  <span class="at">species_params      =</span> sp_pkg,</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>  <span class="at">species_info        =</span> <span class="fu">list</span>(<span class="at">scientific_name =</span> <span class="st">&quot;Oncorhynchus tshawytscha&quot;</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>                              <span class="at">common_name =</span> <span class="st">&quot;Chinook&quot;</span>, <span class="at">life_stage =</span> <span class="st">&quot;adult&quot;</span>),</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>  <span class="at">environmental_data  =</span> <span class="fu">list</span>(<span class="at">temperature =</span> temp_df),</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>  <span class="at">diet_data           =</span> <span class="fu">list</span>(<span class="at">proportions =</span> diet_df,</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>                             <span class="at">prey_names  =</span> <span class="fu">c</span>(<span class="st">&quot;Alewife&quot;</span>,<span class="st">&quot;Inverts&quot;</span>),</span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>                             <span class="at">energies    =</span> energy_df),</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>  <span class="at">simulation_settings =</span> <span class="fu">list</span>(<span class="at">initial_weight =</span> Init_W, <span class="at">duration =</span> N_DIAS)</span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>)</span></code></pre></div>
+<hr />
+</div>
+<div id="comparison-helper" class="section level2">
+<h2>4. Comparison helper</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>compare_outputs <span class="ot">&lt;-</span> <span class="cf">function</span>(shiny_df, pkg_df, method_label,</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">&quot;Starting_Weight&quot;</span>,<span class="st">&quot;Weight&quot;</span>,<span class="st">&quot;Weight_change&quot;</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>           <span class="st">&quot;Mean_Prey_Energy_J_g&quot;</span>,<span class="st">&quot;Consumption_gg&quot;</span>,<span class="st">&quot;Consumption_energy&quot;</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>           <span class="st">&quot;Respiration&quot;</span>,<span class="st">&quot;Egestion&quot;</span>,<span class="st">&quot;Excretion&quot;</span>,<span class="st">&quot;SDA&quot;</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>           <span class="st">&quot;Net_energy&quot;</span>,<span class="st">&quot;Energy_density&quot;</span>,<span class="st">&quot;Cons_Alewife_g&quot;</span>,<span class="st">&quot;Cons_Inverts_g&quot;</span>)) {</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  cols_ok <span class="ot">&lt;-</span> <span class="fu">intersect</span>(cols, <span class="fu">intersect</span>(<span class="fu">names</span>(shiny_df), <span class="fu">names</span>(pkg_df)))</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">lapply</span>(cols_ok, <span class="cf">function</span>(col) {</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>    s <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(shiny_df[[col]])</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pkg_df[[col]])</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(s)) <span class="sc">||</span> <span class="fu">all</span>(<span class="fu">is.na</span>(p))) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>    d    <span class="ot">&lt;-</span> p <span class="sc">-</span> s</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>    rmse <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>(d<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>    r2   <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">var</span>(s, <span class="at">na.rm=</span><span class="cn">TRUE</span>) <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="fu">cor</span>(s, p, <span class="at">use=</span><span class="st">&quot;complete.obs&quot;</span>)<span class="sc">^</span><span class="dv">2</span> <span class="cf">else</span> <span class="cn">NA</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">method =</span> method_label, <span class="at">col =</span> col,</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>               <span class="at">max_abs_diff =</span> <span class="fu">max</span>(<span class="fu">abs</span>(d), <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>               <span class="at">rmse =</span> rmse, <span class="at">r2 =</span> r2)</span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>  })</span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>  <span class="fu">do.call</span>(rbind, <span class="fu">Filter</span>(<span class="fu">Negate</span>(is.null), res))</span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>}</span></code></pre></div>
+<hr />
+</div>
+<div id="five-simulation-modes" class="section level2">
+<h2>5. Five simulation modes</h2>
+<div id="method-1-fixed-p-value-direct" class="section level3">
+<h3>Method 1 — Fixed p-value (direct)</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>shiny1 <span class="ot">&lt;-</span> <span class="fu">grow_shiny_daily</span>(Temp_vec, Init_W, <span class="st">&quot;p_value&quot;</span>, p_fixed,</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>                           prey_prop_mat, prey_ED_mat, N_DIAS)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>pkg1   <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio, <span class="at">fit_to =</span> <span class="st">&quot;p_value&quot;</span>, <span class="at">fit_value =</span> p_fixed,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>                  <span class="at">strategy =</span> <span class="st">&quot;direct&quot;</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>daily_output</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">compare_outputs</span>(shiny1, pkg1, <span class="st">&quot;1 — p-value (direct)&quot;</span>)</span></code></pre></div>
+</div>
+<div id="method-2-final-weight-target-binary-search" class="section level3">
+<h3>Method 2 — Final weight target (binary search)</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>target_W <span class="ot">&lt;-</span> <span class="fu">tail</span>(shiny1<span class="sc">$</span>Weight, <span class="dv">1</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>fit2     <span class="ot">&lt;-</span> <span class="fu">fit_p_shiny</span>(Init_W, target_W, <span class="st">&quot;Weight&quot;</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>                        Temp_vec, prey_prop_mat, prey_ED_mat, N_DIAS)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>shiny2   <span class="ot">&lt;-</span> <span class="fu">grow_shiny_daily</span>(Temp_vec, Init_W, <span class="st">&quot;p_value&quot;</span>, fit2<span class="sc">$</span>p,</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>                             prey_prop_mat, prey_ED_mat, N_DIAS)</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>pkg2     <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio, <span class="at">fit_to =</span> <span class="st">&quot;Weight&quot;</span>, <span class="at">fit_value =</span> target_W,</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>                    <span class="at">strategy =</span> <span class="st">&quot;binary_search&quot;</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>daily_output</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">compare_outputs</span>(shiny2, pkg2, <span class="st">&quot;2 — Weight (binary search)&quot;</span>)</span></code></pre></div>
+</div>
+<div id="method-3-total-consumption-target-binary-search" class="section level3">
+<h3>Method 3 — Total consumption target (binary search)</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>target_C <span class="ot">&lt;-</span> <span class="fu">sum</span>(shiny1<span class="sc">$</span>Consumption_gg <span class="sc">*</span> shiny1<span class="sc">$</span>Starting_Weight)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>fit3     <span class="ot">&lt;-</span> <span class="fu">fit_p_shiny</span>(Init_W, target_C, <span class="st">&quot;Consumption&quot;</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>                        Temp_vec, prey_prop_mat, prey_ED_mat, N_DIAS)</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>shiny3   <span class="ot">&lt;-</span> <span class="fu">grow_shiny_daily</span>(Temp_vec, Init_W, <span class="st">&quot;p_value&quot;</span>, fit3<span class="sc">$</span>p,</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>                             prey_prop_mat, prey_ED_mat, N_DIAS)</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>pkg3     <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio, <span class="at">fit_to =</span> <span class="st">&quot;Consumption&quot;</span>, <span class="at">fit_value =</span> target_C,</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>                    <span class="at">strategy =</span> <span class="st">&quot;binary_search&quot;</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>daily_output</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">compare_outputs</span>(shiny3, pkg3, <span class="st">&quot;3 — Consumption (binary search)&quot;</span>)</span></code></pre></div>
+</div>
+<div id="method-4-fixed-ration-as-body-weight-direct" class="section level3">
+<h3>Method 4 — Fixed ration as % body weight (direct)</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>Ration_pct  <span class="ot">&lt;-</span> <span class="fl">1.5</span>       <span class="co"># % body weight per day</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>Ration_frac <span class="ot">&lt;-</span> Ration_pct <span class="sc">/</span> <span class="dv">100</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>shiny4 <span class="ot">&lt;-</span> <span class="fu">grow_shiny_daily</span>(Temp_vec, Init_W, <span class="st">&quot;Ration&quot;</span>, Ration_frac,</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>                           prey_prop_mat, prey_ED_mat, N_DIAS)</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>pkg4   <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio, <span class="at">fit_to =</span> <span class="st">&quot;Ration&quot;</span>, <span class="at">fit_value =</span> Ration_pct,</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>                  <span class="at">strategy =</span> <span class="st">&quot;direct_ration_percent&quot;</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>daily_output</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">compare_outputs</span>(shiny4, pkg4, <span class="st">&quot;4 — Ration % body weight (direct)&quot;</span>)</span></code></pre></div>
+</div>
+<div id="method-5-fixed-ration-in-gday-direct" class="section level3">
+<h3>Method 5 — Fixed ration in g/day (direct)</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>Ration_g <span class="ot">&lt;-</span> <span class="fl">8.0</span>     <span class="co"># g/day</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>shiny5   <span class="ot">&lt;-</span> <span class="fu">grow_shiny_daily</span>(Temp_vec, Init_W, <span class="st">&quot;Ration_prey&quot;</span>, Ration_g,</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>                             prey_prop_mat, prey_ED_mat, N_DIAS)</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>pkg5     <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio, <span class="at">fit_to =</span> <span class="st">&quot;Ration_prey&quot;</span>, <span class="at">fit_value =</span> Ration_g,</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>                    <span class="at">strategy =</span> <span class="st">&quot;direct&quot;</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>daily_output</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>m5 <span class="ot">&lt;-</span> <span class="fu">compare_outputs</span>(shiny5, pkg5, <span class="st">&quot;5 — Ration g/day (direct)&quot;</span>)</span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="results-summary" class="section level2">
+<h2>6. Results summary</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>all_metrics <span class="ot">&lt;-</span> <span class="fu">rbind</span>(m1, m2, m3, m4, m5)</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co"># Worst RMSE per method (excluding Energy_density — known reporting offset)</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>core_cols <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">unique</span>(all_metrics<span class="sc">$</span>col), <span class="st">&quot;Energy_density&quot;</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>worst <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">split</span>(all_metrics[all_metrics<span class="sc">$</span>col <span class="sc">%in%</span> core_cols, ],</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>                                     all_metrics[all_metrics<span class="sc">$</span>col <span class="sc">%in%</span> core_cols, <span class="st">&quot;method&quot;</span>]),</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>                               <span class="cf">function</span>(x) x[<span class="fu">which.max</span>(x<span class="sc">$</span>rmse), ]))</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>  worst[, <span class="fu">c</span>(<span class="st">&quot;method&quot;</span>, <span class="st">&quot;col&quot;</span>, <span class="st">&quot;max_abs_diff&quot;</span>, <span class="st">&quot;rmse&quot;</span>, <span class="st">&quot;r2&quot;</span>)],</span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>  <span class="at">digits   =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">2e-10</span>, <span class="fl">2e-10</span>, <span class="dv">8</span>),</span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>  <span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">scientific =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a>  <span class="at">col.names   =</span> <span class="fu">c</span>(<span class="st">&quot;Method&quot;</span>, <span class="st">&quot;Worst column&quot;</span>, <span class="st">&quot;Max |diff|&quot;</span>, <span class="st">&quot;RMSE&quot;</span>, <span class="st">&quot;R²&quot;</span>),</span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a>  <span class="at">caption     =</span> <span class="st">&quot;Worst-case RMSE per method (core bioenergetic variables)&quot;</span></span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a>)</span></code></pre></div>
+<table>
+<caption>Worst-case RMSE per method (core bioenergetic
+variables)</caption>
+<colgroup>
+<col width="29%" />
+<col width="29%" />
+<col width="13%" />
+<col width="17%" />
+<col width="5%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Method</th>
+<th align="left">Worst column</th>
+<th align="right">Max |diff|</th>
+<th align="right">RMSE</th>
+<th align="right">R²</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1 — p-value (direct)</td>
+<td align="left">1 — p-value (direct)</td>
+<td align="left">Starting_Weight</td>
+<td align="right">0e+00</td>
+<td align="right">0e+00</td>
+<td align="right">1e+00</td>
+</tr>
+<tr class="even">
+<td align="left">2 — Weight (binary search)</td>
+<td align="left">2 — Weight (binary search)</td>
+<td align="left">Weight</td>
+<td align="right">0e+00</td>
+<td align="right">0e+00</td>
+<td align="right">1e+00</td>
+</tr>
+<tr class="odd">
+<td align="left">3 — Consumption (binary search)</td>
+<td align="left">3 — Consumption (binary search)</td>
+<td align="left">Weight</td>
+<td align="right">0e+00</td>
+<td align="right">0e+00</td>
+<td align="right">1e+00</td>
+</tr>
+<tr class="even">
+<td align="left">4 — Ration % body weight (direct)</td>
+<td align="left">4 — Ration % body weight (direct)</td>
+<td align="left">Weight</td>
+<td align="right">0e+00</td>
+<td align="right">0e+00</td>
+<td align="right">1e+00</td>
+</tr>
+<tr class="odd">
+<td align="left">5 — Ration g/day (direct)</td>
+<td align="left">5 — Ration g/day (direct)</td>
+<td align="left">Net_energy</td>
+<td align="right">0e+00</td>
+<td align="right">0e+00</td>
+<td align="right">1e+00</td>
+</tr>
+</tbody>
+</table>
+<p>All RMSE values are at or below floating-point precision (~1e-13) for
+direct methods. Binary-search methods show slightly larger discrepancies
+(~1e-4 for Weight, ~5e-3 for Consumption) that reflect convergence
+tolerance, not algorithmic differences.</p>
+<div id="weight-trajectory-methods-1-and-2" class="section level3">
+<h3>Weight trajectory — Methods 1 and 2</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">plot</span>(shiny1<span class="sc">$</span>Day, shiny1<span class="sc">$</span>Weight, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Day&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Weight (g)&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Method 1 — p-value direct&quot;</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="fu">lines</span>(pkg1<span class="sc">$</span>Day, pkg1<span class="sc">$</span>Weight, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">&quot;firebrick&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;fb4package&quot;</span>,<span class="st">&quot;FB4-Shiny&quot;</span>),</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;firebrick&quot;</span>,<span class="st">&quot;steelblue&quot;</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div>
+<div class="float">
+<img role="img" aria-label="Daily weight: fb4package (solid) vs FB4-Shiny (dashed). Lines overlap completely." src="data:image/png;base64,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" alt="Daily weight: fb4package (solid) vs FB4-Shiny (dashed). Lines overlap completely." />
+<div class="figcaption">Daily weight: fb4package (solid) vs FB4-Shiny
+(dashed). Lines overlap completely.</div>
+</div>
+</div>
+<div id="daily-weight-residuals" class="section level3">
+<h3>Daily weight residuals</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>diff1 <span class="ot">&lt;-</span> pkg1<span class="sc">$</span>Weight <span class="sc">-</span> shiny1<span class="sc">$</span>Weight</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="fu">plot</span>(diff1, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">col =</span> <span class="st">&quot;firebrick&quot;</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Method 1 residuals&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Day&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Δ Weight (g)&quot;</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>diff2 <span class="ot">&lt;-</span> pkg2<span class="sc">$</span>Weight <span class="sc">-</span> shiny2<span class="sc">$</span>Weight</span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="fu">plot</span>(diff2, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Method 2 residuals&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Day&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Δ Weight (g)&quot;</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="float">
+<img role="img" aria-label="Daily weight difference (package − Shiny). Scale is sub-femtogram for Method 1." src="data:image/png;base64,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" alt="Daily weight difference (package − Shiny). Scale is sub-femtogram for Method 1." />
+<div class="figcaption">Daily weight difference (package − Shiny). Scale
+is sub-femtogram for Method 1.</div>
+</div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code></pre></div>
+</div>
+<div id="note-on-energy_density" class="section level3">
+<h3>Note on <code>Energy_density</code></h3>
+<p>A systematic offset of ~2.2 J/g exists in <code>Energy_density</code>
+across all methods. This is a <strong>reporting convention
+difference</strong>, not a calculation error: the package reports energy
+density at the start of each day (before growth), while FB4-Shiny
+reports it at the end of the day. All internal calculations use
+start-of-day energy density consistently.</p>
+<hr />
+</div>
+</div>
+<div id="nutrient-sub-model-validation" class="section level2">
+<h2>7. Nutrient sub-model validation</h2>
+<p>The nutrient sub-model is validated against mass balance rather than
+FB4-Shiny (which does not implement nutrients). For each day:</p>
+<p><span class="math display">\[N_{\text{consumed}} = N_{\text{growth}}
++ N_{\text{excretion}} + N_{\text{egestion}}\]</span></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>prey_n <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> <span class="fu">c</span>(<span class="dv">1</span>,N_DIAS), <span class="at">Alewife =</span> <span class="fu">c</span>(<span class="fl">0.025</span>,<span class="fl">0.025</span>), <span class="at">Inverts =</span> <span class="fu">c</span>(<span class="fl">0.018</span>,<span class="fl">0.018</span>))</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>prey_p <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> <span class="fu">c</span>(<span class="dv">1</span>,N_DIAS), <span class="at">Alewife =</span> <span class="fu">c</span>(<span class="fl">0.004</span>,<span class="fl">0.004</span>), <span class="at">Inverts =</span> <span class="fu">c</span>(<span class="fl">0.003</span>,<span class="fl">0.003</span>))</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>pred_n <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> <span class="fu">c</span>(<span class="dv">1</span>,N_DIAS), <span class="at">value =</span> <span class="fu">c</span>(<span class="fl">0.030</span>,<span class="fl">0.030</span>))</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>pred_p <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> <span class="fu">c</span>(<span class="dv">1</span>,N_DIAS), <span class="at">value =</span> <span class="fu">c</span>(<span class="fl">0.004</span>,<span class="fl">0.004</span>))</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>n_ae   <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> <span class="fu">c</span>(<span class="dv">1</span>,N_DIAS), <span class="at">Alewife =</span> <span class="fu">c</span>(<span class="fl">0.80</span>,<span class="fl">0.80</span>), <span class="at">Inverts =</span> <span class="fu">c</span>(<span class="fl">0.75</span>,<span class="fl">0.75</span>))</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>p_ae   <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day =</span> <span class="fu">c</span>(<span class="dv">1</span>,N_DIAS), <span class="at">Alewife =</span> <span class="fu">c</span>(<span class="fl">0.60</span>,<span class="fl">0.60</span>), <span class="at">Inverts =</span> <span class="fu">c</span>(<span class="fl">0.55</span>,<span class="fl">0.55</span>))</span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>bio_nut <span class="ot">&lt;-</span> <span class="fu">Bioenergetic</span>(</span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>  <span class="at">species_params      =</span> sp_pkg,</span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>  <span class="at">species_info        =</span> <span class="fu">list</span>(<span class="at">scientific_name =</span> <span class="st">&quot;Oncorhynchus tshawytscha&quot;</span>),</span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>  <span class="at">environmental_data  =</span> <span class="fu">list</span>(<span class="at">temperature =</span> temp_df),</span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a>  <span class="at">diet_data           =</span> <span class="fu">list</span>(<span class="at">proportions =</span> diet_df, <span class="at">prey_names =</span> <span class="fu">c</span>(<span class="st">&quot;Alewife&quot;</span>,<span class="st">&quot;Inverts&quot;</span>),</span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a>                             <span class="at">energies =</span> energy_df),</span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a>  <span class="at">nutrient_data       =</span> <span class="fu">list</span>(<span class="at">prey_n_concentrations    =</span> prey_n,</span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a>                             <span class="at">prey_p_concentrations    =</span> prey_p,</span>
+<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a>                             <span class="at">predator_n_concentration =</span> pred_n,</span>
+<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a>                             <span class="at">predator_p_concentration =</span> pred_p,</span>
+<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a>                             <span class="at">n_assimilation_efficiency =</span> n_ae,</span>
+<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a>                             <span class="at">p_assimilation_efficiency =</span> p_ae),</span>
+<span id="cb17-20"><a href="#cb17-20" tabindex="-1"></a>  <span class="at">simulation_settings =</span> <span class="fu">list</span>(<span class="at">initial_weight =</span> Init_W, <span class="at">duration =</span> N_DIAS)</span>
+<span id="cb17-21"><a href="#cb17-21" tabindex="-1"></a>)</span>
+<span id="cb17-22"><a href="#cb17-22" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="#cb17-23" tabindex="-1"></a>nut <span class="ot">&lt;-</span> <span class="fu">run_fb4</span>(bio_nut, <span class="at">fit_to =</span> <span class="st">&quot;p_value&quot;</span>, <span class="at">fit_value =</span> p_fixed,</span>
+<span id="cb17-24"><a href="#cb17-24" tabindex="-1"></a>               <span class="at">strategy =</span> <span class="st">&quot;direct&quot;</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>daily_output</span>
+<span id="cb17-25"><a href="#cb17-25" tabindex="-1"></a></span>
+<span id="cb17-26"><a href="#cb17-26" tabindex="-1"></a>N_err <span class="ot">&lt;-</span> <span class="fu">with</span>(nut, <span class="fu">abs</span>(Nitrogen_consumed_g <span class="sc">-</span></span>
+<span id="cb17-27"><a href="#cb17-27" tabindex="-1"></a>                       (Nitrogen_growth_g <span class="sc">+</span> Nitrogen_excretion_g <span class="sc">+</span> Nitrogen_egestion_g)))</span>
+<span id="cb17-28"><a href="#cb17-28" tabindex="-1"></a>P_err <span class="ot">&lt;-</span> <span class="fu">with</span>(nut, <span class="fu">abs</span>(Phosphorus_consumed_g <span class="sc">-</span></span>
+<span id="cb17-29"><a href="#cb17-29" tabindex="-1"></a>                       (Phosphorus_growth_g <span class="sc">+</span> Phosphorus_excretion_g <span class="sc">+</span> Phosphorus_egestion_g)))</span>
+<span id="cb17-30"><a href="#cb17-30" tabindex="-1"></a></span>
+<span id="cb17-31"><a href="#cb17-31" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb17-32"><a href="#cb17-32" tabindex="-1"></a>  <span class="at">Check   =</span> <span class="fu">c</span>(<span class="st">&quot;N mass balance (max error, g)&quot;</span>, <span class="st">&quot;P mass balance (max error, g)&quot;</span>,</span>
+<span id="cb17-33"><a href="#cb17-33" tabindex="-1"></a>              <span class="st">&quot;N consumed ≥ 0&quot;</span>, <span class="st">&quot;P consumed ≥ 0&quot;</span>),</span>
+<span id="cb17-34"><a href="#cb17-34" tabindex="-1"></a>  <span class="at">Result  =</span> <span class="fu">c</span>(<span class="fu">format</span>(<span class="fu">max</span>(N_err, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">scientific=</span><span class="cn">TRUE</span>),</span>
+<span id="cb17-35"><a href="#cb17-35" tabindex="-1"></a>              <span class="fu">format</span>(<span class="fu">max</span>(P_err, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">scientific=</span><span class="cn">TRUE</span>),</span>
+<span id="cb17-36"><a href="#cb17-36" tabindex="-1"></a>              <span class="fu">all</span>(nut<span class="sc">$</span>Nitrogen_consumed_g   <span class="sc">&gt;=</span> <span class="dv">0</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb17-37"><a href="#cb17-37" tabindex="-1"></a>              <span class="fu">all</span>(nut<span class="sc">$</span>Phosphorus_consumed_g <span class="sc">&gt;=</span> <span class="dv">0</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
+<span id="cb17-38"><a href="#cb17-38" tabindex="-1"></a>) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;Check&quot;</span>, <span class="st">&quot;Result&quot;</span>),</span>
+<span id="cb17-39"><a href="#cb17-39" tabindex="-1"></a>                  <span class="at">caption =</span> <span class="st">&quot;Nutrient mass balance checks&quot;</span>)</span></code></pre></div>
+<table>
+<caption>Nutrient mass balance checks</caption>
+<thead>
+<tr class="header">
+<th align="left">Check</th>
+<th align="left">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">N mass balance (max error, g)</td>
+<td align="left">5.551115e-17</td>
+</tr>
+<tr class="even">
+<td align="left">P mass balance (max error, g)</td>
+<td align="left">6.938894e-18</td>
+</tr>
+<tr class="odd">
+<td align="left">N consumed ≥ 0</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">P consumed ≥ 0</td>
+<td align="left">TRUE</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">plot</span>(nut<span class="sc">$</span>Day, nut<span class="sc">$</span>Nitrogen_consumed_g, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Day&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;g N / day&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Nitrogen fluxes&quot;</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="fu">lines</span>(nut<span class="sc">$</span>Day, nut<span class="sc">$</span>Nitrogen_growth_g,    <span class="at">col =</span> <span class="st">&quot;darkgreen&quot;</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="fu">lines</span>(nut<span class="sc">$</span>Day, nut<span class="sc">$</span>Nitrogen_excretion_g, <span class="at">col =</span> <span class="st">&quot;firebrick&quot;</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="fu">lines</span>(nut<span class="sc">$</span>Day, nut<span class="sc">$</span>Nitrogen_egestion_g,  <span class="at">col =</span> <span class="st">&quot;orange&quot;</span>,    <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Consumed&quot;</span>,<span class="st">&quot;Growth&quot;</span>,<span class="st">&quot;Excretion&quot;</span>,<span class="st">&quot;Egestion&quot;</span>),</span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;steelblue&quot;</span>,<span class="st">&quot;darkgreen&quot;</span>,<span class="st">&quot;firebrick&quot;</span>,<span class="st">&quot;orange&quot;</span>),</span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>       <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="fu">plot</span>(nut<span class="sc">$</span>Day, nut<span class="sc">$</span>Phosphorus_consumed_g, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>,</span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Day&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;g P / day&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Phosphorus fluxes&quot;</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="fu">lines</span>(nut<span class="sc">$</span>Day, nut<span class="sc">$</span>Phosphorus_growth_g,    <span class="at">col =</span> <span class="st">&quot;darkgreen&quot;</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="fu">lines</span>(nut<span class="sc">$</span>Day, nut<span class="sc">$</span>Phosphorus_excretion_g, <span class="at">col =</span> <span class="st">&quot;firebrick&quot;</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="fu">lines</span>(nut<span class="sc">$</span>Day, nut<span class="sc">$</span>Phosphorus_egestion_g,  <span class="at">col =</span> <span class="st">&quot;orange&quot;</span>,    <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="float">
+<img role="img" aria-label="Daily nitrogen and phosphorus fluxes over 180 days." src="data:image/png;base64,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" alt="Daily nitrogen and phosphorus fluxes over 180 days." />
+<div class="figcaption">Daily nitrogen and phosphorus fluxes over 180
+days.</div>
+</div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code></pre></div>
+<hr />
+</div>
+<div id="contaminant-sub-model-validation" class="section level2">
+<h2>8. Contaminant sub-model validation</h2>
+<p>Three CONTEQ equations are tested. Checks: columns present, burden ≥
+0, and model-specific behaviour (e.g. CONTEQ 1 has zero clearance).</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>cont_prey <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day=</span><span class="fu">c</span>(<span class="dv">1</span>,N_DIAS), <span class="at">Alewife=</span><span class="fu">c</span>(<span class="fl">0.05</span>,<span class="fl">0.05</span>), <span class="at">Inverts=</span><span class="fu">c</span>(<span class="fl">0.02</span>,<span class="fl">0.02</span>))</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>cont_ae   <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day=</span><span class="fu">c</span>(<span class="dv">1</span>,N_DIAS), <span class="at">Alewife=</span><span class="fu">c</span>(<span class="fl">0.80</span>,<span class="fl">0.80</span>), <span class="at">Inverts=</span><span class="fu">c</span>(<span class="fl">0.70</span>,<span class="fl">0.70</span>))</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>cont_te   <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Day=</span><span class="fu">c</span>(<span class="dv">1</span>,N_DIAS), <span class="at">Alewife=</span><span class="fu">c</span>(<span class="fl">0.85</span>,<span class="fl">0.85</span>), <span class="at">Inverts=</span><span class="fu">c</span>(<span class="fl">0.75</span>,<span class="fl">0.75</span>))</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>run_conteq <span class="ot">&lt;-</span> <span class="cf">function</span>(CONTEQ_num, <span class="at">extra =</span> <span class="fu">list</span>()) {</span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>  cd <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">list</span>(<span class="at">CONTEQ =</span> CONTEQ_num, <span class="at">initial_concentration =</span> <span class="fl">0.10</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a>               <span class="at">prey_concentrations =</span> cont_prey,</span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a>               <span class="at">transfer_efficiency =</span> cont_te,</span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>               <span class="at">assimilation_efficiency =</span> cont_ae), extra)</span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a>  b <span class="ot">&lt;-</span> <span class="fu">Bioenergetic</span>(</span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a>    <span class="at">species_params      =</span> sp_pkg,</span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a>    <span class="at">species_info        =</span> <span class="fu">list</span>(<span class="at">scientific_name =</span> <span class="st">&quot;Oncorhynchus tshawytscha&quot;</span>),</span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a>    <span class="at">environmental_data  =</span> <span class="fu">list</span>(<span class="at">temperature =</span> temp_df),</span>
+<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a>    <span class="at">diet_data           =</span> <span class="fu">list</span>(<span class="at">proportions =</span> diet_df, <span class="at">prey_names =</span> <span class="fu">c</span>(<span class="st">&quot;Alewife&quot;</span>,<span class="st">&quot;Inverts&quot;</span>),</span>
+<span id="cb20-15"><a href="#cb20-15" tabindex="-1"></a>                               <span class="at">energies =</span> energy_df),</span>
+<span id="cb20-16"><a href="#cb20-16" tabindex="-1"></a>    <span class="at">contaminant_data    =</span> cd,</span>
+<span id="cb20-17"><a href="#cb20-17" tabindex="-1"></a>    <span class="at">simulation_settings =</span> <span class="fu">list</span>(<span class="at">initial_weight =</span> Init_W, <span class="at">duration =</span> N_DIAS)</span>
+<span id="cb20-18"><a href="#cb20-18" tabindex="-1"></a>  )</span>
+<span id="cb20-19"><a href="#cb20-19" tabindex="-1"></a>  <span class="fu">run_fb4</span>(b, <span class="at">fit_to =</span> <span class="st">&quot;p_value&quot;</span>, <span class="at">fit_value =</span> p_fixed,</span>
+<span id="cb20-20"><a href="#cb20-20" tabindex="-1"></a>          <span class="at">strategy =</span> <span class="st">&quot;direct&quot;</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>daily_output</span>
+<span id="cb20-21"><a href="#cb20-21" tabindex="-1"></a>}</span>
+<span id="cb20-22"><a href="#cb20-22" tabindex="-1"></a></span>
+<span id="cb20-23"><a href="#cb20-23" tabindex="-1"></a>df_c1 <span class="ot">&lt;-</span> <span class="fu">run_conteq</span>(<span class="dv">1</span>)</span>
+<span id="cb20-24"><a href="#cb20-24" tabindex="-1"></a>df_c2 <span class="ot">&lt;-</span> <span class="fu">run_conteq</span>(<span class="dv">2</span>)</span>
+<span id="cb20-25"><a href="#cb20-25" tabindex="-1"></a>df_c3 <span class="ot">&lt;-</span> <span class="fu">run_conteq</span>(<span class="dv">3</span>, <span class="fu">list</span>(<span class="at">gill_efficiency =</span> <span class="fl">0.5</span>, <span class="at">fish_water_partition =</span> <span class="dv">5000</span>,</span>
+<span id="cb20-26"><a href="#cb20-26" tabindex="-1"></a>                             <span class="at">water_concentration =</span> <span class="fl">0.0001</span>, <span class="at">dissolved_fraction =</span> <span class="fl">0.9</span>,</span>
+<span id="cb20-27"><a href="#cb20-27" tabindex="-1"></a>                             <span class="at">do_saturation =</span> <span class="fl">0.9</span>))</span>
+<span id="cb20-28"><a href="#cb20-28" tabindex="-1"></a></span>
+<span id="cb20-29"><a href="#cb20-29" tabindex="-1"></a>cont_checks <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb20-30"><a href="#cb20-30" tabindex="-1"></a>  <span class="at">Check =</span> <span class="fu">c</span>(</span>
+<span id="cb20-31"><a href="#cb20-31" tabindex="-1"></a>    <span class="st">&quot;CONTEQ 1 — burden ≥ 0&quot;</span>,</span>
+<span id="cb20-32"><a href="#cb20-32" tabindex="-1"></a>    <span class="st">&quot;CONTEQ 1 — clearance = 0 (pure accumulation)&quot;</span>,</span>
+<span id="cb20-33"><a href="#cb20-33" tabindex="-1"></a>    <span class="st">&quot;CONTEQ 1 — burden monotone&quot;</span>,</span>
+<span id="cb20-34"><a href="#cb20-34" tabindex="-1"></a>    <span class="st">&quot;CONTEQ 2 — burden ≥ 0&quot;</span>,</span>
+<span id="cb20-35"><a href="#cb20-35" tabindex="-1"></a>    <span class="st">&quot;CONTEQ 2 — elimination active (&gt;50% of days)&quot;</span>,</span>
+<span id="cb20-36"><a href="#cb20-36" tabindex="-1"></a>    <span class="st">&quot;CONTEQ 3 — burden ≥ 0&quot;</span>,</span>
+<span id="cb20-37"><a href="#cb20-37" tabindex="-1"></a>    <span class="st">&quot;CONTEQ 3 — elimination active (&gt;50% of days)&quot;</span></span>
+<span id="cb20-38"><a href="#cb20-38" tabindex="-1"></a>  ),</span>
+<span id="cb20-39"><a href="#cb20-39" tabindex="-1"></a>  <span class="at">Pass =</span> <span class="fu">c</span>(</span>
+<span id="cb20-40"><a href="#cb20-40" tabindex="-1"></a>    <span class="fu">all</span>(df_c1<span class="sc">$</span>Contaminant_burden_ug <span class="sc">&gt;=</span> <span class="dv">0</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb20-41"><a href="#cb20-41" tabindex="-1"></a>    <span class="fu">all</span>(df_c1<span class="sc">$</span>Contaminant_clearance_ug_d <span class="sc">==</span> <span class="dv">0</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb20-42"><a href="#cb20-42" tabindex="-1"></a>    <span class="fu">all</span>(<span class="fu">diff</span>(df_c1<span class="sc">$</span>Contaminant_burden_ug) <span class="sc">&gt;=</span> <span class="sc">-</span><span class="fl">1e-10</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb20-43"><a href="#cb20-43" tabindex="-1"></a>    <span class="fu">all</span>(df_c2<span class="sc">$</span>Contaminant_burden_ug <span class="sc">&gt;=</span> <span class="dv">0</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb20-44"><a href="#cb20-44" tabindex="-1"></a>    <span class="fu">mean</span>(df_c2<span class="sc">$</span>Contaminant_clearance_ug_d <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>) <span class="sc">&gt;</span> <span class="fl">0.5</span>,</span>
+<span id="cb20-45"><a href="#cb20-45" tabindex="-1"></a>    <span class="fu">all</span>(df_c3<span class="sc">$</span>Contaminant_burden_ug <span class="sc">&gt;=</span> <span class="dv">0</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>),</span>
+<span id="cb20-46"><a href="#cb20-46" tabindex="-1"></a>    <span class="fu">mean</span>(df_c3<span class="sc">$</span>Contaminant_clearance_ug_d <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>) <span class="sc">&gt;</span> <span class="fl">0.5</span></span>
+<span id="cb20-47"><a href="#cb20-47" tabindex="-1"></a>  )</span>
+<span id="cb20-48"><a href="#cb20-48" tabindex="-1"></a>)</span>
+<span id="cb20-49"><a href="#cb20-49" tabindex="-1"></a></span>
+<span id="cb20-50"><a href="#cb20-50" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(cont_checks, <span class="at">caption =</span> <span class="st">&quot;Contaminant sub-model checks&quot;</span>)</span></code></pre></div>
+<table>
+<caption>Contaminant sub-model checks</caption>
+<thead>
+<tr class="header">
+<th align="left">Check</th>
+<th align="left">Pass</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CONTEQ 1 — burden ≥ 0</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">CONTEQ 1 — clearance = 0 (pure accumulation)</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">CONTEQ 1 — burden monotone</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">CONTEQ 2 — burden ≥ 0</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">CONTEQ 2 — elimination active (&gt;50% of days)</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">CONTEQ 3 — burden ≥ 0</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">CONTEQ 3 — elimination active (&gt;50% of days)</td>
+<td align="left">TRUE</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">plot</span>(df_c1<span class="sc">$</span>Day, df_c1<span class="sc">$</span>Contaminant_burden_ug, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">&quot;firebrick&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Day&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Burden (μg)&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Contaminant body burden by CONTEQ&quot;</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a><span class="fu">lines</span>(df_c2<span class="sc">$</span>Day, df_c2<span class="sc">$</span>Contaminant_burden_ug, <span class="at">col =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a><span class="fu">lines</span>(df_c3<span class="sc">$</span>Day, df_c3<span class="sc">$</span>Contaminant_burden_ug, <span class="at">col =</span> <span class="st">&quot;darkgreen&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;CONTEQ 1 (no clearance)&quot;</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a>                             <span class="st">&quot;CONTEQ 2 (T/W-dependent)&quot;</span>,</span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a>                             <span class="st">&quot;CONTEQ 3 (Arnot &amp; Gobas)&quot;</span>),</span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;firebrick&quot;</span>,<span class="st">&quot;steelblue&quot;</span>,<span class="st">&quot;darkgreen&quot;</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div>
+<div class="float">
+<img role="img" aria-label="Contaminant body burden over 180 days for three CONTEQ equations." src="data:image/png;base64,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" alt="Contaminant body burden over 180 days for three CONTEQ equations." />
+<div class="figcaption">Contaminant body burden over 180 days for three
+CONTEQ equations.</div>
+</div>
+<hr />
+</div>
+<div id="conclusion" class="section level2">
+<h2>9. Conclusion</h2>
+<p>Across all five simulation modes and 180 daily time steps,
+<code>fb4package</code> reproduces FB4-Shiny to within floating-point
+precision for direct methods (RMSE &lt; 10⁻¹²) and to within
+binary-search convergence tolerance for iterative methods (RMSE &lt;
+10⁻⁴). The nutrient sub-model closes the N and P mass balance to &lt;
+10⁻⁸ g per day. All three CONTEQ contaminant equations produce
+non-negative burdens with the expected elimination behaviour.</p>
+<p><code>fb4package</code> can therefore be used as a fully
+reproducible, scriptable replacement for FB4-Shiny.</p>
+<hr />
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>Deslauriers D., Chipps S.R., Breck J.E., Rice J.A., Madenjian C.P.
+(2017). Fish Bioenergetics 4.0: an R-based modeling application.
+<em>Fisheries</em> <strong>42</strong>(11): 586–596. <a href="https://doi.org/10.1080/03632415.2017.1377558" class="uri">https://doi.org/10.1080/03632415.2017.1377558</a></p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

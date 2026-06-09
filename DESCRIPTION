@@ -2,7 +2,7 @@ Package: fb4package
 Type: Package
 Title: 'Fish Bioenergetics 4.0' Model Implementation with
         High-Performance 'TMB' Backend
-Version: 2.0.0
+Version: 2.1.0
 Authors@R: c(
    person(
      "Hans", "Ttito",
@@ -20,7 +20,8 @@ Description: An implementation of the 'Fish Bioenergetics 4.0' framework
     compatibility. Includes species-specific parameter databases and tools
     for modeling fish growth, consumption, and metabolism under varying
     environmental conditions.
-URL: https://hansttito.github.io/fb4package/,
+URL: https://CRAN.R-project.org/package=fb4package,
+        https://hansttito.github.io/fb4package/,
         https://github.com/HansTtito/fb4package
 BugReports: https://github.com/HansTtito/fb4package/issues
 License: MIT + file LICENSE
@@ -36,8 +37,8 @@ Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Language: en-US
 NeedsCompilation: yes
-Packaged: 2026-05-04 20:49:54 UTC; hkev2
+Packaged: 2026-06-09 07:34:41 UTC; hkev2
 Author: Hans Ttito [aut, cre]
 Maintainer: Hans Ttito <kvttitos@gmail.com>
 Repository: CRAN
-Date/Publication: 2026-05-07 20:40:13 UTC
+Date/Publication: 2026-06-09 09:10:02 UTC
